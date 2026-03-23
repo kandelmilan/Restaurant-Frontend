@@ -5,6 +5,7 @@ import OurStory from "../components/OurStory";
 import Footer from "../components/Footer";
 import Navbar from "../components/NavBar";
 
+
 const items = [
     {
         id: "1",
@@ -45,6 +46,7 @@ export default function Home() {
 
             <Hero />
 
+
             {/* Featured Section */}
             <section className="px-6 md:px-16 py-16 bg-[#f8f5f2]">
                 <div className="flex justify-between items-center mb-6">
@@ -65,6 +67,7 @@ export default function Home() {
             </section>
 
             <OurStory />
+
             <Footer />
         </>
     );
