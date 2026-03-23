@@ -60,7 +60,7 @@ export default function OurStory() {
                 </motion.div>
             </div>
 
-            {/* Testimonials with fade + slide wrapper */}
+            {/* Testimonials with fade */}
             <motion.div
                 initial="hidden"
                 whileInView="visible"
@@ -71,7 +71,7 @@ export default function OurStory() {
                 <Testimonials />
             </motion.div>
 
-            {/* CallToAction with fade + slight scale */}
+
             <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
