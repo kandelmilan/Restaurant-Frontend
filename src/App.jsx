@@ -1,9 +1,21 @@
-function App() {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-purple-500 to-pink-500">
-      <h1 className="text-5xl font-bold text-white">Tailwind is working! and we are ready to go </h1>
-    </div>
-  );
-}
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { CartProvider } from "./assets/CartContext.jsx";
+import Index from "./pages/Index.jsx";
+import MenuPage from "./pages/MenuPage.jsx";
+import CartPage from "./pages/CartPage.jsx";
+// import NotFound from "./pages/NotFound.jsx";
+
+const App = () => (
+  <CartProvider>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Index />} />
+        <Route path="/menu" element={<MenuPage />} />
+        <Route path="/cart" element={<CartPage />} />
+        {/* <Route path="*" element={<NotFound />} /> */}
+      </Routes>
+    </BrowserRouter>
+  </CartProvider>
+);
 
 export default App;
