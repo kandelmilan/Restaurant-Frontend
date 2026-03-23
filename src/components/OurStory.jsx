@@ -7,26 +7,33 @@ import CallToAction from "./CallToAction";
 
 const bentoEase = [0.2, 0, 0, 1];
 
-// Variants for fade + slide up
+// Variants for fade + slide up animation
 const fadeSlideUp = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { ease: bentoEase, duration: 0.6 } },
+    hidden: { opacity: 0, y: 40 },
+    visible: {
+        opacity: 1,
+        y: 0,
+        transition: { ease: bentoEase, duration: 0.8 }
+    },
 };
 
 export default function OurStory() {
     return (
         <section className="relative overflow-hidden bg-gradient-to-b from-secondary/50 to-background py-24">
+
+            {/* Background Mandala */}
             <MandalaDecor
                 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-primary opacity-[0.06] pointer-events-none"
                 size={500}
             />
 
             <div className="container mx-auto px-6 relative z-10">
-                {/* Main content fade + slide */}
+
+                {/* Main Story Content */}
                 <motion.div
                     initial="hidden"
                     whileInView="visible"
-                    viewport={{ once: true, amount: 0.3 }}
+                    viewport={{ once: true, amount: 0.1 }}
                     variants={fadeSlideUp}
                     className="max-w-2xl mx-auto text-center"
                 >
@@ -60,23 +67,23 @@ export default function OurStory() {
                 </motion.div>
             </div>
 
-            {/* Testimonials with fade */}
+            {/* Testimonials with animation wrapper */}
             <motion.div
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: true, amount: 0.3 }}
+                viewport={{ once: true, amount: 0.1 }}
                 variants={fadeSlideUp}
                 className="mt-16 pt-12"
             >
                 <Testimonials />
             </motion.div>
 
-
+            {/* Call To Action with fade + scale */}
             <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ ease: bentoEase, duration: 0.6 }}
+                viewport={{ once: true, amount: 0.1 }}
+                transition={{ ease: bentoEase, duration: 0.8 }}
                 className="mt-8 pt-6"
             >
                 <CallToAction />
