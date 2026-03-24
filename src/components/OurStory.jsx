@@ -7,13 +7,23 @@ import CallToAction from "./CallToAction";
 
 const bentoEase = [0.2, 0, 0, 1];
 
-// Variants for fade + slide up animation
+// Parent container animation (for stagger effect)
+const containerVariants = {
+    hidden: {},
+    visible: {
+        transition: {
+            staggerChildren: 0.2,
+        },
+    },
+};
+
+// Child animation (fade + slide)
 const fadeSlideUp = {
     hidden: { opacity: 0, y: 40 },
     visible: {
         opacity: 1,
         y: 0,
-        transition: { ease: bentoEase, duration: 0.8 }
+        transition: { ease: bentoEase, duration: 0.8 },
     },
 };
 
@@ -31,58 +41,79 @@ export default function OurStory() {
 
                 {/* Main Story Content */}
                 <motion.div
+                    variants={containerVariants}
                     initial="hidden"
                     whileInView="visible"
-                    viewport={{ once: true, amount: 0.1 }}
-                    variants={fadeSlideUp}
+                    viewport={{ once: false, amount: 0.2 }}
                     className="max-w-2xl mx-auto text-center"
                 >
-                    <p className="font-body text-xs font-semibold text-primary uppercase tracking-widest mb-3">
+                    <motion.p
+                        variants={fadeSlideUp}
+                        className="font-body text-xs font-semibold text-primary uppercase tracking-widest mb-3"
+                    >
                         Our Journey
-                    </p>
-                    <h2 className="font-display italic text-3xl md:text-4xl text-foreground mb-4">
-                        Our Story
-                    </h2>
-                    <IndianPattern
-                        className="w-48 mx-auto mb-8 text-primary"
-                        color="hsl(37 90% 44%)"
-                    />
+                    </motion.p>
 
-                    <p className="font-body text-base text-muted-foreground leading-relaxed mb-4">
+                    <motion.h2
+                        variants={fadeSlideUp}
+                        className="font-display italic text-3xl md:text-4xl text-foreground mb-4"
+                    >
+                        Our Story
+                    </motion.h2>
+
+                    <motion.div variants={fadeSlideUp}>
+                        <IndianPattern
+                            className="w-48 mx-auto mb-8 text-primary"
+                            color="hsl(37 90% 44%)"
+                        />
+                    </motion.div>
+
+                    <motion.p
+                        variants={fadeSlideUp}
+                        className="font-body text-base text-muted-foreground leading-relaxed mb-4"
+                    >
                         Born from a shared dream between a spice merchant from Jaipur and a
                         kaiseki chef from Kyoto, Masala Zen bridges two ancient culinary
                         traditions. Every dish honors the depth of Indian spices while
                         embracing the seasonal precision of Japanese cooking.
-                    </p>
-                    <p className="font-body text-base text-muted-foreground leading-relaxed mb-6">
+                    </motion.p>
+
+                    <motion.p
+                        variants={fadeSlideUp}
+                        className="font-body text-base text-muted-foreground leading-relaxed mb-6"
+                    >
                         Nestled in the quiet streets of Minami-Aoyama, our space reflects
                         this duality — warm copper and earthy tones meet clean lines and
                         natural light. Here, dining is not just a meal; it's a meditation.
-                    </p>
+                    </motion.p>
 
-                    {/* Features line */}
-                    <p className="font-body text-xs text-muted-foreground tracking-wide">
+                    <motion.p
+                        variants={fadeSlideUp}
+                        className="font-body text-xs text-muted-foreground tracking-wide"
+                    >
                         🕉️ Authentic Spices | 🎌 Japanese Craft | 🌿 Seasonal Produce
-                    </p>
+                    </motion.p>
                 </motion.div>
             </div>
 
-            {/* Testimonials with animation wrapper */}
+            {/* Testimonials */}
             <motion.div
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: true, amount: 0.1 }}
-                variants={fadeSlideUp}
+                viewport={{ once: false, amount: 0.2 }}
+                variants={containerVariants}
                 className="mt-16 pt-12"
             >
-                <Testimonials />
+                <motion.div variants={fadeSlideUp}>
+                    <Testimonials />
+                </motion.div>
             </motion.div>
 
-            {/* Call To Action with fade + scale */}
+            {/* Call To Action */}
             <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true, amount: 0.1 }}
+                viewport={{ once: false, amount: 0.2 }}
                 transition={{ ease: bentoEase, duration: 0.8 }}
                 className="mt-8 pt-6"
             >
