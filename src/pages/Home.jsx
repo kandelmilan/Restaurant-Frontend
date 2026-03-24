@@ -39,7 +39,7 @@ const items = [
     },
 ];
 
-// Animation variants for featured cards
+// Animation variants
 const containerVariants = {
     hidden: {},
     visible: { transition: { staggerChildren: 0.2 } },
@@ -59,37 +59,59 @@ export default function Home() {
             <Hero />
 
             {/* Featured Section */}
-            <section className="px-6 md:px-16 py-16 bg-[#f8f5f2]">
-                <div className="flex justify-between items-center mb-6">
-                    <h2 className="font-serif text-3xl">Guest Favorites</h2>
-                    <Link
-                        to="/menu"
-                        className="text-orange-500 font-semibold hover:underline"
-                    >
-                        See Full Menu →
-                    </Link>
-                </div>
+            <section
+                className="relative px-6 md:px-16 py-20 bg-no-repeat bg-cover bg-center"
+                style={{
+                    backgroundImage: `
+            linear-gradient(
+                to right,
+                #f8f5f2 0%,
+                rgba(248,245,242,0.95) 30%,
+                rgba(248,245,242,0.7) 55%,
+                rgba(248,245,242,0.2) 75%,
+                rgba(248,245,242,0) 100%
+            ),
+            url('https://masala-zen-fusion-ui.lovable.app/assets/hero-food-CbwyfA_c.jpg')
+        `,
+                }}
+            >
+                <div className="max-w-6xl">
 
-                {/* Animated grid */}
-                <motion.div
-                    className="grid md:grid-cols-3 gap-6"
-                    variants={containerVariants}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, amount: 0.2 }}
-                >
-                    {items.map((item) => (
-                        <motion.div key={item.id} variants={cardVariants}>
-                            <MenuCard item={item} />
-                        </motion.div>
-                    ))}
-                </motion.div>
+                    {/* Header */}
+                    <div className="flex justify-between items-center mb-10">
+                        <h2 className="font-serif text-3xl md:text-4xl">
+                            Guest Favorites
+                        </h2>
+
+                        <Link
+                            to="/menu"
+                            className="text-orange-500 font-semibold hover:underline"
+                        >
+                            See Full Menu →
+                        </Link>
+                    </div>
+
+                    {/* Cards */}
+                    <motion.div
+                        className="grid md:grid-cols-3 gap-6"
+                        variants={containerVariants}
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true, amount: 0.2 }}
+                    >
+                        {items.map((item) => (
+                            <motion.div key={item.id} variants={cardVariants}>
+                                <MenuCard item={item} />
+                            </motion.div>
+                        ))}
+                    </motion.div>
+                </div>
             </section>
 
-            {/* OurStory (already has animations internally) */}
+            {/* Story Section */}
             <OurStory />
 
-            {/* Footer with subtle fade-in */}
+            {/* Footer */}
             <motion.div
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}

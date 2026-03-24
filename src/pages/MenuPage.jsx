@@ -21,10 +21,12 @@ const MenuPage = () => {
         });
     }, [dietFilter, categoryFilter, spiceFilter]);
 
+    // ✅ Improved pill styling
     const pillClass = (active) =>
-        `px-4 py-2 rounded-full text-xs font-semibold transition-all duration-300 ${active
-            ? "bg-primary text-white shadow-md scale-105"
-            : "bg-gray-200 text-gray-600 hover:bg-gray-300"
+        `px-4 py-2 rounded-full text-xs font-semibold transition-all duration-300 ${
+            active
+                ? "bg-primary text-black shadow-md scale-105 ring-2 ring-primary/30"
+                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
         }`;
 
     return (
@@ -55,6 +57,7 @@ const MenuPage = () => {
                     className="sticky top-16 z-40 py-4 -mx-6 px-6 bg-gray-50/90 backdrop-blur-lg border-b border-gray-200 mb-10"
                 >
                     <div className="flex flex-wrap gap-3 items-center">
+
                         {/* Diet */}
                         <button onClick={() => setDietFilter("all")} className={pillClass(dietFilter === "all")}>
                             All
@@ -99,8 +102,11 @@ const MenuPage = () => {
                     </div>
                 </motion.div>
 
-                {/* Grid with Animation */}
-                <motion.div layout className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                {/* Menu Grid */}
+                <motion.div
+                    layout
+                    className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8"
+                >
                     <AnimatePresence>
                         {filteredItems.map((item) => (
                             <motion.div
@@ -122,9 +128,9 @@ const MenuPage = () => {
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        className="text-center py-20 text-gray-500"
+                        className="text-center py-20 text-gray-500 text-lg"
                     >
-                        No dishes match your filters.
+                        😕 No dishes match your filters.
                     </motion.div>
                 )}
             </div>
