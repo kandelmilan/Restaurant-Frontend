@@ -1,4 +1,12 @@
+import React from "react";
+import { useCart } from "../assets/CartContext";
+
 export default function FoodCard({ item }) {
+    const { addToCart, cartItems } = useCart();
+
+    // Check if item is already in cart
+    const currentItem = cartItems.find((i) => i.id === item.id);
+
     return (
         <div className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition duration-300">
 
@@ -18,13 +26,25 @@ export default function FoodCard({ item }) {
 
                 {/* PRICE + BUTTON */}
                 <div className="flex justify-between items-center mt-4">
-                    <span className="font-medium text-gray-800">
-                        {item.price}
-                    </span>
+                    <span className="font-medium text-gray-800">¥{item.price}</span>
 
-                    <button className="bg-orange-500 text-white px-4 py-1 rounded-full text-sm hover:bg-orange-600 hover:scale-105 transition duration-200">
-                        + Add
-                    </button>
+                    {currentItem ? (
+                        <span className="text-green-600 font-medium text-sm">
+                            Added ({currentItem.quantity})
+                        </span>
+                    ) : (
+                        <button
+                            onClick={() =>
+                                addToCart({
+                                    ...item,
+                                    price: Number(item.price.toString().replace("¥", "")), // ensures number
+                                })
+                            }
+                            className="bg-orange-500 text-white px-4 py-1 rounded-full text-sm hover:bg-orange-600 hover:scale-105 transition duration-200"
+                        >
+                            + Add
+                        </button>
+                    )}
                 </div>
             </div>
         </div>
