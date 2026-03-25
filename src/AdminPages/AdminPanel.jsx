@@ -1,6 +1,10 @@
 
 import React from "react";
 import Navbar from "../components/NavBar";
+const handleLogout = () => {
+    localStorage.removeItem("isAdmin");
+    navigate("/admin/login");
+};
 
 const AdminPanel = () => {
     return (
