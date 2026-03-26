@@ -1,19 +1,33 @@
-
 import React from "react";
-import Navbar from "../components/NavBar";
-const handleLogout = () => {
-    localStorage.removeItem("isAdmin");
-    navigate("/admin/login");
-};
 
 const AdminPanel = () => {
     return (
-        <div className="min-h-screen bg-gray-100">
-            <Navbar />
-            <main className="container mx-auto px-6 py-12">
-                <h1 className="text-3xl font-bold mb-6">Admin Panel</h1>
-                <p>Welcome, Admin! Here you can manage your app.</p>
-            </main>
+        <div>
+            <h1 className="text-2xl font-semibold mb-6">Dashboard</h1>
+
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+
+                <div className="bg-white p-6 rounded-xl shadow-sm">
+                    <p className="text-gray-500 text-sm">Total Orders</p>
+                    <h2 className="text-2xl font-bold mt-2">1,284</h2>
+                </div>
+
+                <div className="bg-white p-6 rounded-xl shadow-sm">
+                    <p className="text-gray-500 text-sm">Revenue</p>
+                    <h2 className="text-2xl font-bold mt-2">¥2.4M</h2>
+                </div>
+
+                <div className="bg-white p-6 rounded-xl shadow-sm">
+                    <p className="text-gray-500 text-sm">Menu Items</p>
+                    <h2 className="text-2xl font-bold mt-2">8</h2>
+                </div>
+
+                <div className="bg-white p-6 rounded-xl shadow-sm">
+                    <p className="text-gray-500 text-sm">Customers</p>
+                    <h2 className="text-2xl font-bold mt-2">856</h2>
+                </div>
+
+            </div>
         </div>
     );
 };
