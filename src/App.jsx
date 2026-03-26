@@ -47,7 +47,7 @@ const App = () => {
             <Route path="menu" element={<AdminMenu />} />
 
             {/* Optional: redirect unknown admin routes */}
-            <Route path="*" element={<Navigate to="/admin" />} />
+            <Route path="*" element={<Navigate to="/admin/login" />} />
           </Route>
 
           {/* ================= GLOBAL FALLBACK ================= */}
