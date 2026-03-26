@@ -91,9 +91,7 @@ const AdminLogin = () => {
             </button>
           </form>
 
-          <p className="text-xs text-gray-400 mt-6 text-center">
-            Demo: admin@gmail.com / admin123
-          </p>
+
         </div>
       </div>
     </div>

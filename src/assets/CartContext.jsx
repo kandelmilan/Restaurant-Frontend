@@ -17,7 +17,7 @@ export const CartProvider = ({ children }) => {
         );
       }
 
-      // ✅ Convert price safely
+      // Convert price safely
       const priceNumber =
         typeof item.price === "string"
           ? Number(item.price.replace("¥", ""))
