@@ -7,72 +7,76 @@ export default function Hero() {
     return (
         <section className="relative bg-[#f8f5f2] overflow-hidden">
 
-            {/* Soft Background Glow */}
+            {/* Background Glow */}
             <div className="absolute inset-0 bg-gradient-to-br from-orange-100/40 via-transparent to-red-100/30 pointer-events-none" />
 
             {/* HERO */}
-            <div className="min-h-[90vh] flex items-center px-6 md:px-16 pt-10 pb-16 relative z-10">
-                <div className="grid md:grid-cols-2 gap-12 items-center w-full max-w-7xl mx-auto">
+            <div className="min-h-[90vh] flex items-center py-12 md:py-16 relative z-10">
+                <div className="w-full max-w-7xl mx-auto px-6 md:px-10">
 
-                    {/* LEFT CONTENT */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 40 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 1.2, ease }}
-                    >
-                        <p className="text-sm tracking-[0.2em] text-orange-500 mb-4">
-                            EST. 2019 • TOKYO
-                        </p>
+                    <div className="grid md:grid-cols-2 items-center gap-8 md:gap-12">
 
-                        <h1 className="font-serif text-4xl md:text-6xl leading-tight text-gray-900">
-                            Indian Soul, <br />
-                            <span className="text-orange-500">Japanese Heart.</span>
-                        </h1>
+                        {/* LEFT CONTENT */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 40 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 1.1, ease }}
+                            className="max-w-xl"
+                        >
+                            <p className="text-xs md:text-sm tracking-[0.25em] text-orange-500 mb-3">
+                                EST. 2019 • TOKYO
+                            </p>
 
-                        <p className="mt-6 text-gray-600 max-w-md leading-relaxed">
-                            Hand-ground spices meet seasonal Japanese produce.
-                            A quiet revolution of flavor in the heart of Tokyo.
-                        </p>
+                            <h1 className="font-serif text-4xl md:text-6xl leading-[1.05] text-gray-900">
+                                Indian Soul, <br />
+                                <span className="text-orange-500">
+                                    Japanese Heart.
+                                </span>
+                            </h1>
 
-                        {/* BUTTONS */}
-                        <div className="flex gap-4 mt-8">
-                            <button className="bg-orange-500 text-white px-7 py-3 rounded-full shadow-lg hover:scale-105 hover:shadow-xl transition duration-300">
-                                View Menu →
-                            </button>
+                            <p className="mt-5 text-gray-600 leading-relaxed">
+                                Hand-ground spices meet seasonal Japanese produce.
+                                A quiet revolution of flavor in the heart of Tokyo.
+                            </p>
 
-                            <button className="border border-gray-300 px-7 py-3 rounded-full hover:bg-gray-100 hover:shadow-md transition duration-300">
-                                Order Now
-                            </button>
-                        </div>
-                    </motion.div>
+                            <div className="flex flex-wrap gap-4 mt-7">
+                                <button className="bg-orange-500 text-white px-6 py-3 rounded-full shadow-md hover:scale-105 transition duration-300">
+                                    View Menu →
+                                </button>
 
-                    {/* RIGHT IMAGE */}
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 1.4, ease }}
-                        className="flex justify-center md:justify-end"
-                    >
-                        <div className="relative w-full max-w-md md:max-w-lg rounded-3xl overflow-hidden shadow-2xl">
+                                <button className="border border-gray-300 px-6 py-3 rounded-full hover:bg-gray-100 transition duration-300">
+                                    Order Now
+                                </button>
+                            </div>
+                        </motion.div>
 
-                            {/* Image */}
-                            <img
-                                src="https://masala-zen-fusion-ui.lovable.app/assets/hero-food-CbwyfA_c.jpg"
-                                alt="Food"
-                                className="w-full h-[350px] md:h-[450px] object-cover hover:scale-105 transition duration-700"
-                            />
+                        {/* RIGHT IMAGE - BIG & DOMINANT */}
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.96 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 1.3, ease }}
+                            className="w-full h-full flex justify-center md:justify-end"
+                        >
+                            <div className="relative w-full h-[420px] md:h-[520px] lg:h-[600px]">
 
-                            {/* Overlay for depth */}
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-                        </div>
-                    </motion.div>
+                                <img
+                                    src="https://masala-zen-fusion-ui.lovable.app/assets/hero-food-CbwyfA_c.jpg"
+                                    alt="Food"
+                                    className="w-full h-full object-cover rounded-2xl"
+                                />
 
+                                {/* Soft overlay */}
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-2xl" />
+                            </div>
+                        </motion.div>
+
+                    </div>
                 </div>
             </div>
 
             {/* STATS */}
-            <div className="border-t border-gray-200 py-14 px-6 md:px-16 bg-white/60 backdrop-blur-sm">
-                <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-10 text-center">
+            <div className="border-t border-gray-200 py-12 px-6 md:px-10 bg-white/60 backdrop-blur-sm">
+                <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
 
                     {[
                         { value: "500+", label: "HAPPY GUESTS" },
@@ -82,10 +86,10 @@ export default function Hero() {
                     ].map((item, i) => (
                         <motion.div
                             key={i}
-                            initial={{ opacity: 0, y: 30 }}
+                            initial={{ opacity: 0, y: 25 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: false }}
-                            transition={{ duration: 1, delay: i * 0.2, ease }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.8, delay: i * 0.15, ease }}
                         >
                             <h3 className="text-3xl md:text-4xl font-serif text-[#c97a2b]">
                                 {item.value}
