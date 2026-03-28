@@ -22,15 +22,15 @@ const App = () => {
       <BrowserRouter>
         <Routes>
 
-          {/* ================= PUBLIC ROUTES ================= */}
+          {/* -------------------- PUBLIC ROUTES -------------------- */}
           <Route path="/" element={<Index />} />
           <Route path="/menu" element={<MenuPage />} />
           <Route path="/cart" element={<CartPage />} />
 
-          {/* ================= ADMIN LOGIN ================= */}
+          {/* -------------------- ADMIN LOGIN -------------------- */}
           <Route path="/admin/login" element={<AdminLogin />} />
 
-          {/* ================= ADMIN PANEL ================= */}
+          {/* -------------------- ADMIN PANEL -------------------- */}
           <Route
             path="/admin"
             element={
@@ -50,7 +50,7 @@ const App = () => {
             <Route path="*" element={<Navigate to="/admin/login" />} />
           </Route>
 
-          {/* ================= GLOBAL FALLBACK ================= */}
+          {/* -------------------- GLOBAL FALLBACK -------------------- */}
           <Route path="*" element={<Navigate to="/" />} />
 
         </Routes>
