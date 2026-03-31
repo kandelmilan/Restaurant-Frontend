@@ -39,7 +39,7 @@ const AdminLayout = () => {
                         🕉️ Admin
                     </div>
 
-                    {/* Navigation (TOP aligned now ✅) */}
+                    {/* Navigation (TOP aligned now) */}
                     <nav className="flex flex-col gap-2 px-3 mt-4">
                         {navItems.map((item) => (
                             <button

@@ -15,47 +15,50 @@ import AdminMenu from "./AdminPages/AdminMenu.jsx";
 
 // Auth Wrapper
 import ProtectedRoute from "./RequiredComponents/ProtectedRoute.jsx";
+import { AuthProvider } from "./Context/AuthContext.jsx";
 
 const App = () => {
   return (
-    <CartProvider>
-      <BrowserRouter>
-        <Routes>
+    <AuthProvider>
+      <CartProvider>
+        <BrowserRouter>
+          <Routes>
 
-          {/* -------------------- PUBLIC ROUTES -------------------- */}
-          <Route path="/" element={<Index />} />
-          <Route path="/menu" element={<MenuPage />} />
-          <Route path="/cart" element={<CartPage />} />
+            {/* -------------------- PUBLIC ROUTES -------------------- */}
+            <Route path="/" element={<Index />} />
+            <Route path="/menu" element={<MenuPage />} />
+            <Route path="/cart" element={<CartPage />} />
 
-          {/* -------------------- ADMIN LOGIN -------------------- */}
-          <Route path="/admin/login" element={<AdminLogin />} />
+            {/* -------------------- ADMIN LOGIN -------------------- */}
+            <Route path="/admin/login" element={<AdminLogin />} />
 
-          {/* -------------------- ADMIN PANEL -------------------- */}
-          <Route
-            path="/admin"
-            element={
-              <ProtectedRoute>
-                <AdminLayout />
-              </ProtectedRoute>
-            }
-          >
-            {/* Default dashboard */}
-            <Route index element={<AdminDashboard />} />
+            {/* -------------------- ADMIN PANEL -------------------- */}
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute>
+                  <AdminLayout />
+                </ProtectedRoute>
+              }
+            >
+              {/* Default dashboard */}
+              <Route index element={<AdminDashboard />} />
 
-            {/* Sub routes */}
-            <Route path="orders" element={<AdminOrders />} />
-            <Route path="menu" element={<AdminMenu />} />
+              {/* Sub routes */}
+              <Route path="orders" element={<AdminOrders />} />
+              <Route path="menu" element={<AdminMenu />} />
 
-            {/* Optional: redirect unknown admin routes */}
-            <Route path="*" element={<Navigate to="/admin/login" />} />
-          </Route>
+              {/* Optional: redirect unknown admin routes */}
+              <Route path="*" element={<Navigate to="/admin/login" />} />
+            </Route>
 
-          {/* -------------------- GLOBAL FALLBACK -------------------- */}
-          <Route path="*" element={<Navigate to="/" />} />
+            {/* -------------------- GLOBAL FALLBACK -------------------- */}
+            <Route path="*" element={<Navigate to="/" />} />
 
-        </Routes>
-      </BrowserRouter>
-    </CartProvider>
+          </Routes>
+        </BrowserRouter>
+      </CartProvider>
+    </AuthProvider>
   );
 };
 
