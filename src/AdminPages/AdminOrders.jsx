@@ -126,67 +126,95 @@ const AdminOrders = () => {
             </table>
 
             {/* MODAL */}
+            {/* MODAL */}
             {showModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center">
-                    <div className="bg-white p-6 rounded-xl w-[400px] relative">
+                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-center z-50">
 
-                        {/* Close */}
+                    <div className="bg-white w-full max-w-md rounded-2xl shadow-2xl p-6 relative animate-fadeIn">
+
+                        {/* Close Button */}
                         <button
                             onClick={() => setShowModal(false)}
-                            className="absolute top-3 right-3"
+                            className="absolute top-4 right-4 text-gray-500 hover:text-black"
                         >
-                            <X />
+                            <X size={20} />
                         </button>
 
-                        <h2 className="text-xl font-bold mb-4">
+                        {/* Title */}
+                        <h2 className="text-2xl font-semibold mb-5 text-center">
                             {editId ? "Edit Order" : "Add Order"}
                         </h2>
 
-                        <div className="space-y-3">
-                            <input
-                                type="text"
-                                name="customer"
-                                placeholder="Customer Name"
-                                value={formData.customer}
-                                onChange={handleChange}
-                                className="w-full border p-2 rounded"
-                            />
+                        {/* Form */}
+                        <div className="space-y-4">
 
-                            <input
-                                type="text"
-                                name="items"
-                                placeholder="Items"
-                                value={formData.items}
-                                onChange={handleChange}
-                                className="w-full border p-2 rounded"
-                            />
+                            {/* Customer */}
+                            <div>
+                                <label className="block text-sm font-medium mb-1">Customer Name</label>
+                                <input
+                                    type="text"
+                                    name="customer"
+                                    value={formData.customer}
+                                    onChange={handleChange}
+                                    className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                                />
+                            </div>
 
-                            <input
-                                type="text"
-                                name="total"
-                                placeholder="Total"
-                                value={formData.total}
-                                onChange={handleChange}
-                                className="w-full border p-2 rounded"
-                            />
+                            {/* Items */}
+                            <div>
+                                <label className="block text-sm font-medium mb-1">Items</label>
+                                <input
+                                    type="text"
+                                    name="items"
+                                    value={formData.items}
+                                    onChange={handleChange}
+                                    className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                                />
+                            </div>
 
-                            <select
-                                name="status"
-                                value={formData.status}
-                                onChange={handleChange}
-                                className="w-full border p-2 rounded"
-                            >
-                                <option>Pending</option>
-                                <option>Preparing</option>
-                                <option>Delivered</option>
-                            </select>
+                            {/* Total */}
+                            <div>
+                                <label className="block text-sm font-medium mb-1">Total</label>
+                                <input
+                                    type="text"
+                                    name="total"
+                                    value={formData.total}
+                                    onChange={handleChange}
+                                    className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                                />
+                            </div>
 
-                            <button
-                                onClick={handleSubmit}
-                                className="w-full bg-black text-white py-2 rounded"
-                            >
-                                {editId ? "Update Order" : "Add Order"}
-                            </button>
+                            {/* Status */}
+                            <div>
+                                <label className="block text-sm font-medium mb-1">Status</label>
+                                <select
+                                    name="status"
+                                    value={formData.status}
+                                    onChange={handleChange}
+                                    className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                                >
+                                    <option>Pending</option>
+                                    <option>Preparing</option>
+                                    <option>Delivered</option>
+                                </select>
+                            </div>
+
+                            {/* Buttons */}
+                            <div className="flex gap-3 pt-3">
+                                <button
+                                    onClick={() => setShowModal(false)}
+                                    className="w-1/2 border border-gray-300 py-2 rounded-lg hover:bg-gray-100"
+                                >
+                                    Cancel
+                                </button>
+
+                                <button
+                                    onClick={handleSubmit}
+                                    className="w-1/2 bg-black text-white py-2 rounded-lg hover:bg-gray-800"
+                                >
+                                    {editId ? "Update" : "Add"}
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
