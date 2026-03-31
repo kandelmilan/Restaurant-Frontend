@@ -30,16 +30,17 @@ const AdminLayout = () => {
             {/* Sidebar */}
             <aside
                 className={`fixed top-0 left-0 z-20 h-full w-64 bg-white shadow-md transform transition-transform duration-300 ease-in-out
-          ${sidebarOpen ? "translate-x-0" : "-translate-x-64"} md:translate-x-0`}
+  ${sidebarOpen ? "translate-x-0" : "-translate-x-64"} md:translate-x-0`}
             >
-                <div className="flex flex-col justify-between h-full">
+                <div className="flex flex-col h-full">
+
                     {/* Logo */}
-                    <div className="p-6 flex items-center gap-2 text-2xl font-bold text-orange-500">
+                    <div className="p-6 text-2xl font-bold text-orange-500 border-b">
                         🕉️ Admin
                     </div>
 
-                    {/* Navigation */}
-                    <nav className="flex flex-col gap-2 px-2">
+                    {/* Navigation (TOP aligned now ✅) */}
+                    <nav className="flex flex-col gap-2 px-3 mt-4">
                         {navItems.map((item) => (
                             <button
                                 key={item.path}
@@ -52,8 +53,8 @@ const AdminLayout = () => {
                         ))}
                     </nav>
 
-                    {/* Logout */}
-                    <div className="p-4">
+                    {/* Push logout to bottom */}
+                    <div className="mt-auto p-4 border-t">
                         <button
                             onClick={handleLogout}
                             className="flex items-center gap-2 px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100 w-full"
@@ -62,6 +63,7 @@ const AdminLayout = () => {
                             Logout
                         </button>
                     </div>
+
                 </div>
             </aside>
 
