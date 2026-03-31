@@ -1,49 +1,41 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useState } from "react";
+
+// Simple function to generate random token
+const generateToken = () =>
+    Math.random().toString(36).substring(2) + Date.now().toString(36);
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const userData = localStorage.getItem("user");
+    const [user, setUser] = useState(userData ? JSON.parse(userData) : null);
 
-    // Verify token on load
-    useEffect(() => {
-        const verifyUser = async () => {
-            const token = localStorage.getItem("token");
+    const login = (email, password) => {
+        // Frontend-only check
+        if (email === "admin@masalazen.com" && password === "admin123") {
+            const mockUser = { id: "1", name: "Admin", role: "admin" };
+            const token = generateToken();
 
-            if (!token) {
-                setLoading(false);
-                return;
-            }
+            localStorage.setItem("token", token);       // auto token
+            localStorage.setItem("user", JSON.stringify(mockUser));
 
-            try {
-                const res = await fetch("http://localhost:5000/api/auth/me", {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
+            setUser(mockUser);
+            return { success: true, token };
+        } else {
+            return { success: false, message: "Invalid email or password" };
+        }
+    };
 
-                const data = await res.json();
+    const logout = () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        setUser(null);
+    };
 
-                if (res.ok) {
-                    setUser(data.user); // { id, name, role }
-                } else {
-                    localStorage.removeItem("token");
-                    setUser(null);
-                }
-            } catch (error) {
-                console.error(error);
-                setUser(null);
-            }
-
-            setLoading(false);
-        };
-
-        verifyUser();
-    }, []);
+    const isAuthenticated = !!user;
 
     return (
-        <AuthContext.Provider value={{ user, setUser, loading }}>
+        <AuthContext.Provider value={{ user, login, logout, isAuthenticated }}>
             {children}
         </AuthContext.Provider>
     );

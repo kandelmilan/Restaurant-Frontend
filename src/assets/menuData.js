@@ -119,5 +119,5 @@ export const menuItems = [
     spiceLevel: 0,
     isFeatured: true,
   },
-  // add more dishes here...
+
 ];

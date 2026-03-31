@@ -1,8 +1,11 @@
+// src/pages/AdminLogin.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../Context/AuthContext";
 import foodImage from "../assets/12.jpg";
 
 const AdminLogin = () => {
+  const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -10,18 +13,12 @@ const AdminLogin = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    if (!email || !password) {
-      setError("Please enter both email and password");
-      return;
-    }
-
-    if (email === "admin@masalazen.com" && password === "admin123") {
-      localStorage.setItem("isAdmin", "true");
+    const result = login(email, password);
+    if (result.success) {
       setError("");
-      navigate("/admin");
+      navigate("/admin"); // go to admin dashboard
     } else {
-      setError("Invalid email or password");
+      setError(result.message);
     }
   };
 
@@ -29,19 +26,12 @@ const AdminLogin = () => {
     <div className="min-h-screen flex bg-[#f5f3f1]">
       {/* LEFT IMAGE */}
       <div className="hidden md:block md:w-1/2 h-screen relative">
-        <img
-          src={foodImage}
-          className="w-full h-full object-cover"
-        />
-
-        {/* Dark overlay */}
+        <img src={foodImage} className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-black/50" />
-
-        {/* Text over image */}
         <div className="absolute bottom-10 left-10 text-white max-w-sm">
           <h1 className="text-3xl font-serif mb-2">Masala Zen</h1>
           <p className="text-sm text-gray-200">
-            Admin portal — manage your menu, orders, and restaurant operations with ease.
+            Admin portal — manage your menu, orders, and restaurant operations.
           </p>
         </div>
       </div>
@@ -90,8 +80,6 @@ const AdminLogin = () => {
               Sign In
             </button>
           </form>
-
-
         </div>
       </div>
     </div>
