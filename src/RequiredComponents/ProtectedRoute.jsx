@@ -3,10 +3,7 @@ import { Navigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
 
 const ProtectedRoute = ({ children, adminOnly = false }) => {
-    const { user, loading } = useAuth();
-
-    // Wait until token check finishes
-    if (loading) return <div>Loading...</div>;
+    const { user } = useAuth();
 
     // Not logged in
     if (!user) {

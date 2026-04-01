@@ -1,44 +1,37 @@
 import React, { createContext, useContext, useState } from "react";
 
-// Simple function to generate random token
-const generateToken = () =>
-    Math.random().toString(36).substring(2) + Date.now().toString(36);
+// Create context outside the component
+export const AuthContext = createContext({
+    user: null,
+    login: () => { },
+    logout: () => { },
+});
 
-const AuthContext = createContext();
-
-export const AuthProvider = ({ children }) => {
-    const userData = localStorage.getItem("user");
+export function AuthProvider({ children }) {
+    const userData = sessionStorage.getItem("user");
     const [user, setUser] = useState(userData ? JSON.parse(userData) : null);
 
     const login = (email, password) => {
-        // Frontend-only check
         if (email === "admin@masalazen.com" && password === "admin123") {
             const mockUser = { id: "1", name: "Admin", role: "admin" };
-            const token = generateToken();
-
-            localStorage.setItem("token", token);       // auto token
-            localStorage.setItem("user", JSON.stringify(mockUser));
-
+            sessionStorage.setItem("user", JSON.stringify(mockUser));
             setUser(mockUser);
-            return { success: true, token };
-        } else {
-            return { success: false, message: "Invalid email or password" };
+            return { success: true };
         }
+        return { success: false };
     };
 
     const logout = () => {
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
+        sessionStorage.removeItem("user");
         setUser(null);
     };
 
-    const isAuthenticated = !!user;
-
     return (
-        <AuthContext.Provider value={{ user, login, logout, isAuthenticated }}>
+        <AuthContext.Provider value={{ user, login, logout }}>
             {children}
         </AuthContext.Provider>
     );
-};
+}
 
+// ✅ Stable hook export
 export const useAuth = () => useContext(AuthContext);

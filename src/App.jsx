@@ -16,6 +16,8 @@ import AdminMenu from "./AdminPages/AdminMenu.jsx";
 // Auth Wrapper
 import ProtectedRoute from "./RequiredComponents/ProtectedRoute.jsx";
 import { AuthProvider } from "./Context/AuthContext.jsx";
+import AdminHero from "./AdminPages/AdminHero.jsx";
+import AdminMyStory from "./AdminPages/AdminMyStory.jsx";
 
 const App = () => {
   return (
@@ -47,6 +49,8 @@ const App = () => {
               {/* Sub routes */}
               <Route path="orders" element={<AdminOrders />} />
               <Route path="menu" element={<AdminMenu />} />
+              <Route path="hero" element={<AdminHero />} />
+              <Route path="story" element={<AdminMyStory />} />
 
               {/* Optional: redirect unknown admin routes */}
               <Route path="*" element={<Navigate to="/admin/login" />} />

@@ -11,6 +11,8 @@ const AdminLayout = () => {
         { name: "Dashboard", path: "/admin", icon: <Home size={20} /> },
         { name: "Orders", path: "/admin/orders", icon: <List size={20} /> },
         { name: "Menu Items", path: "/admin/menu", icon: <Box size={20} /> },
+        { name: "Hero Section", path: "/admin/hero", icon: <Box size={20} /> },
+        { name: "My Story Section", path: "/admin/story", icon: <Box size={20} /> },
     ];
 
     const linkClass = (path) =>
