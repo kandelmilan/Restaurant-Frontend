@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { Home, List, Box, LogOut, Menu as MenuIcon } from "lucide-react";
-
+import { Layers, Image, BookOpen } from "lucide-react";
 const AdminLayout = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const navigate = useNavigate();
@@ -10,9 +10,9 @@ const AdminLayout = () => {
     const navItems = [
         { name: "Dashboard", path: "/admin", icon: <Home size={20} /> },
         { name: "Orders", path: "/admin/orders", icon: <List size={20} /> },
-        { name: "Menu Items", path: "/admin/menu", icon: <Box size={20} /> },
-        { name: "Hero Section", path: "/admin/hero", icon: <Box size={20} /> },
-        { name: "My Story Section", path: "/admin/story", icon: <Box size={20} /> },
+        { name: "Menu Items", path: "/admin/menu", icon: <Layers size={20} /> },
+        { name: "Hero Section", path: "/admin/hero", icon: <Image size={20} /> },
+        { name: "My Story Section", path: "/admin/story", icon: <BookOpen size={20} /> },
     ];
 
     const linkClass = (path) =>
