@@ -19,6 +19,7 @@ import { AuthProvider } from "./Context/AuthContext.jsx";
 import AdminHero from "./AdminPages/AdminHero.jsx";
 import AdminMyStory from "./AdminPages/AdminMyStory.jsx";
 import AdminTestimonials from "./AdminPages/AdminTestimonials.jsx";
+import AdminFooter from "./AdminPages/AdminFooter.jsx";
 
 const App = () => {
   return (
@@ -53,6 +54,7 @@ const App = () => {
               <Route path="hero" element={<AdminHero />} />
               <Route path="story" element={<AdminMyStory />} />
               <Route path="testimonial" element={<AdminTestimonials />} />
+              <Route path="footer" element={<AdminFooter />} />
 
               {/* Optional: redirect unknown admin routes */}
               <Route path="*" element={<Navigate to="/admin/login" />} />
