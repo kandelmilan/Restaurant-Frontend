@@ -8,27 +8,55 @@ const AdminMenu = () => {
             name: "Butter Chicken",
             price: "¥1,450",
             image: "https://via.placeholder.com/60",
+            category: "curry",
+            isVeg: false,
+            spiceLevel: 2,
+            description: "Classic Indian butter chicken."
         },
         {
             id: 2,
             name: "Palak Paneer",
             price: "¥1,200",
             image: "https://via.placeholder.com/60",
+            category: "curry",
+            isVeg: true,
+            spiceLevel: 1,
+            description: "Spinach with cottage cheese."
         },
     ]);
 
     const [showModal, setShowModal] = useState(false);
     const [editId, setEditId] = useState(null);
-    const [formData, setFormData] = useState({ name: "", price: "", image: "" });
+    const [formData, setFormData] = useState({
+        name: "",
+        price: "",
+        image: "",
+        category: "curry",
+        isVeg: true,
+        spiceLevel: 1,
+        description: ""
+    });
 
     // Input change
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        const { name, value, type, checked } = e.target;
+        setFormData({
+            ...formData,
+            [name]: type === "checkbox" ? checked : value
+        });
     };
 
     // Open Add Modal
     const handleAdd = () => {
-        setFormData({ name: "", price: "", image: "" });
+        setFormData({
+            name: "",
+            price: "",
+            image: "",
+            category: "curry",
+            isVeg: true,
+            spiceLevel: 1,
+            description: ""
+        });
         setEditId(null);
         setShowModal(true);
     };
@@ -56,7 +84,7 @@ const AdminMenu = () => {
         } else {
             const newItem = {
                 id: menuItems.length + 1,
-                ...formData,
+                ...formData
             };
             setMenuItems([...menuItems, newItem]);
         }
@@ -92,6 +120,9 @@ const AdminMenu = () => {
                         <th className="px-6 py-3 text-left">Image</th>
                         <th className="px-6 py-3 text-left">Name</th>
                         <th className="px-6 py-3 text-left">Price</th>
+                        <th className="px-6 py-3 text-left">Category</th>
+                        <th className="px-6 py-3 text-left">Veg/Non-Veg</th>
+                        <th className="px-6 py-3 text-left">Spice Level</th>
                         <th className="px-6 py-3 text-left">Actions</th>
                     </tr>
                 </thead>
@@ -108,6 +139,9 @@ const AdminMenu = () => {
                             </td>
                             <td className="px-6 py-3">{item.name}</td>
                             <td className="px-6 py-3">{item.price}</td>
+                            <td className="px-6 py-3">{item.category}</td>
+                            <td className="px-6 py-3">{item.isVeg ? "Veg" : "Non-Veg"}</td>
+                            <td className="px-6 py-3">{"🌶️".repeat(item.spiceLevel)}</td>
                             <td className="px-6 py-3 flex gap-3">
                                 <button onClick={() => handleEdit(item)}>
                                     <Pencil size={18} className="text-blue-600" />
@@ -145,7 +179,7 @@ const AdminMenu = () => {
                                     value={formData.name}
                                     onChange={handleChange}
                                     placeholder="Item Name"
-                                    className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                                    className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-black placeholder:text-gray-400"
                                 />
                             </div>
                             <div>
@@ -155,7 +189,7 @@ const AdminMenu = () => {
                                     value={formData.price}
                                     onChange={handleChange}
                                     placeholder="¥0"
-                                    className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                                    className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-black placeholder:text-gray-400"
                                 />
                             </div>
                             <div>
@@ -165,7 +199,58 @@ const AdminMenu = () => {
                                     value={formData.image}
                                     onChange={handleChange}
                                     placeholder="https://example.com/image.jpg"
+                                    className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-black placeholder:text-gray-400"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-gray-700 mb-1">Category</label>
+                                <select
+                                    name="category"
+                                    value={formData.category}
+                                    onChange={handleChange}
+                                    className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-black placeholder:text-gray-400"
+                                >
+                                    {["curry", "tandoor", "starters", "sides", "drinks"].map((cat) => (
+                                        <option key={cat} value={cat}>
+                                            {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div>
+                                <label className="block text-gray-700 mb-1">Veg / Non-Veg</label>
+                                <input
+                                    type="checkbox"
+                                    name="isVeg"
+                                    checked={formData.isVeg}
+                                    onChange={handleChange}
+                                    className="mr-2"
+                                />
+                                Vegetarian
+                            </div>
+                            <div>
+                                <label className="block text-gray-700 mb-1">Spice Level</label>
+                                <select
+                                    name="spiceLevel"
+                                    value={formData.spiceLevel}
+                                    onChange={handleChange}
                                     className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                                >
+                                    {[1, 2, 3].map((s) => (
+                                        <option key={s} value={s}>
+                                            {"🌶️".repeat(s)}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div>
+                                <label className="block text-gray-700 mb-1">Description</label>
+                                <textarea
+                                    name="description"
+                                    value={formData.description}
+                                    onChange={handleChange}
+                                    placeholder="Add a description..."
+                                    className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-black placeholder:text-gray-400"
                                 />
                             </div>
 
