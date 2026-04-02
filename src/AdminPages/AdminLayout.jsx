@@ -13,6 +13,7 @@ const AdminLayout = () => {
         { name: "Menu Items", path: "/admin/menu", icon: <Layers size={20} /> },
         { name: "Hero Section", path: "/admin/hero", icon: <Image size={20} /> },
         { name: "My Story Section", path: "/admin/story", icon: <BookOpen size={20} /> },
+        { name: "Testimonial Section", path: "/admin/testimonial", icon: <BookOpen size={20} /> },
     ];
 
     const linkClass = (path) =>
