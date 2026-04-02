@@ -1,100 +1,238 @@
 import React, { useState } from "react";
-import { motion } from "framer-motion";
-import MandalaDecor from "../components/MandalaDecor";
-import IndianPattern from "../components/IndianPattern";
-import { Pencil, X } from "lucide-react";
+import { Plus, Pencil, Trash, X } from "lucide-react";
 
-const bentoEase = [0.2, 0, 0, 1];
+const AdminStory = () => {
+    const [stories, setStories] = useState([
+        {
+            id: "STORY-001",
+            subtitle: "Our Journey",
+            title: "Our Story",
+            content:
+                "Born from a shared dream between a spice merchant and a chef...",
+            highlight:
+                "🕉️ Authentic Spices | 🎌 Japanese Craft | 🌿 Seasonal Produce",
+        },
+    ]);
 
-const containerVariants = {
-    hidden: {},
-    visible: { transition: { staggerChildren: 0.2 } },
-};
+    const [showModal, setShowModal] = useState(false);
+    const [editId, setEditId] = useState(null);
 
-const fadeSlideUp = {
-    hidden: { opacity: 0, y: 40 },
-    visible: { opacity: 1, y: 0, transition: { ease: bentoEase, duration: 0.8 } },
-};
-
-export default function AdminMyStory() {
-    // Editable story state
-    const [story, setStory] = useState({
-        title: "Our Story",
-        subtitle: "Our Journey",
-        content: `Born from a shared dream between a spice merchant from Jaipur and a
-      kaiseki chef from Kyoto, Masala Zen bridges two ancient culinary
-      traditions. Every dish honors the depth of Indian spices while
-      embracing the seasonal precision of Japanese cooking.`,
-        highlight: "🕉️ Authentic Spices | 🎌 Japanese Craft | 🌿 Seasonal Produce",
+    const [formData, setFormData] = useState({
+        subtitle: "",
+        title: "",
+        content: "",
+        highlight: "",
     });
 
-    const [isEditing, setIsEditing] = useState(false);
-    const [formData, setFormData] = useState({ ...story });
-
-    const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
-    const handleSave = () => {
-        setStory({ ...formData });
-        setIsEditing(false);
+    // Handle input change
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
     };
-    const handleCancel = () => {
-        setFormData({ ...story });
-        setIsEditing(false);
+
+    // Add new story
+    const handleAdd = () => {
+        setFormData({
+            subtitle: "",
+            title: "",
+            content: "",
+            highlight: "",
+        });
+        setEditId(null);
+        setShowModal(true);
+    };
+
+    // Edit story
+    const handleEdit = (story) => {
+        setFormData(story);
+        setEditId(story.id);
+        setShowModal(true);
+    };
+
+    // Submit (Add / Edit)
+    const handleSubmit = () => {
+        if (!formData.title || !formData.content) return;
+
+        if (editId) {
+            setStories(
+                stories.map((s) =>
+                    s.id === editId ? { ...s, ...formData } : s
+                )
+            );
+        } else {
+            const newStory = {
+                id: `STORY-${String(stories.length + 1).padStart(3, "0")}`,
+                ...formData,
+            };
+            setStories([...stories, newStory]);
+        }
+
+        setShowModal(false);
+    };
+
+    // Delete story
+    const handleDelete = (id) => {
+        if (window.confirm("Are you sure you want to delete this story?")) {
+            setStories(stories.filter((s) => s.id !== id));
+        }
     };
 
     return (
-        <section className="relative overflow-hidden bg-gradient-to-b from-secondary/50 to-background py-24 min-h-screen">
-            {/* Background Mandala */}
-            <MandalaDecor className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-primary opacity-10 pointer-events-none" size={500} />
+        <div className="p-6">
 
-            <div className="container mx-auto px-6 relative z-10 max-w-3xl">
+            {/* Header */}
+            <div className="flex justify-between items-center mb-6">
+                <h1 className="text-2xl font-bold">My Story Section</h1>
 
-                {/* Admin Edit Button */}
-                <div className="flex justify-end mb-4">
-                    {!isEditing ? (
-                        <button onClick={() => setIsEditing(true)} className="flex items-center gap-2 bg-black text-white px-4 py-2 rounded-lg">
-                            <Pencil size={18} /> Edit Story
-                        </button>
-                    ) : (
-                        <div className="flex gap-2">
-                            <button onClick={handleCancel} className="flex items-center gap-2 border border-gray-300 px-4 py-2 rounded-lg hover:bg-gray-100">
-                                <X size={18} /> Cancel
-                            </button>
-                            <button onClick={handleSave} className="flex items-center gap-2 bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800">
-                                Save
-                            </button>
-                        </div>
-                    )}
-                </div>
-
-                {/* Story Content */}
-                <motion.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }} className="text-center">
-
-                    {/* Subtitle */}
-                    <motion.p variants={fadeSlideUp} className="font-body text-xs font-semibold text-primary uppercase tracking-widest mb-3">
-                        {isEditing ? <input type="text" name="subtitle" value={formData.subtitle} onChange={handleChange} className="w-full border border-gray-300 p-1 rounded-lg" /> : story.subtitle}
-                    </motion.p>
-
-                    {/* Title */}
-                    <motion.h2 variants={fadeSlideUp} className="font-display italic text-3xl md:text-4xl text-foreground mb-4">
-                        {isEditing ? <input type="text" name="title" value={formData.title} onChange={handleChange} className="w-full border border-gray-300 p-1 rounded-lg text-center" /> : story.title}
-                    </motion.h2>
-
-                    {/* Decorative Pattern */}
-                    <motion.div variants={fadeSlideUp}>
-                        <IndianPattern className="w-48 mx-auto mb-8 text-primary" color="hsl(37 90% 44%)" />
-                    </motion.div>
-
-                    {/* Content */}
-                    <motion.p variants={fadeSlideUp} className="font-body text-base text-muted-foreground leading-relaxed mb-4">
-                        {isEditing ? <textarea name="content" value={formData.content} onChange={handleChange} className="w-full border border-gray-300 p-2 rounded-lg" rows={5} /> : story.content}
-                    </motion.p>
-
-                    {/* Highlight */}
-                    <motion.p variants={fadeSlideUp} className="font-body text-xs text-muted-foreground tracking-wide">
-                        {isEditing ? <input type="text" name="highlight" value={formData.highlight} onChange={handleChange} className="w-full border border-gray-300 p-1 rounded-lg text-center" /> : story.highlight}
-                    </motion.p>
-                </motion.div>
+                <button
+                    onClick={handleAdd}
+                    className="bg-black text-white p-3 rounded-full hover:bg-gray-800 transition"
+                >
+                    <Plus size={20} />
+                </button>
             </div>
-        </section>
+
+            {/* Table */}
+            <table className="min-w-full bg-white rounded-xl shadow overflow-hidden">
+                <thead className="bg-gray-50">
+                    <tr>
+                        <th className="px-6 py-3 text-left">ID</th>
+                        <th className="px-6 py-3 text-left">Title</th>
+                        <th className="px-6 py-3 text-left">Subtitle</th>
+                        <th className="px-6 py-3 text-left">Highlight</th>
+                        <th className="px-6 py-3 text-left">Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {stories.map((story) => (
+                        <tr key={story.id} className="border-b hover:bg-gray-50">
+                            <td className="px-6 py-3">{story.id}</td>
+
+                            <td className="px-6 py-3 font-semibold">
+                                {story.title}
+                            </td>
+
+                            <td className="px-6 py-3">{story.subtitle}</td>
+
+                            <td className="px-6 py-3 text-sm text-gray-600">
+                                {story.highlight}
+                            </td>
+
+                            <td className="px-6 py-3 flex gap-3">
+                                <button onClick={() => handleEdit(story)}>
+                                    <Pencil size={18} className="text-blue-600" />
+                                </button>
+
+                                <button onClick={() => handleDelete(story.id)}>
+                                    <Trash size={18} className="text-red-600" />
+                                </button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+
+            {/* MODAL */}
+            {showModal && (
+                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-center z-50">
+
+                    <div className="bg-white w-full max-w-lg rounded-2xl shadow-2xl p-6 relative animate-fadeIn">
+
+                        {/* Close */}
+                        <button
+                            onClick={() => setShowModal(false)}
+                            className="absolute top-4 right-4 text-gray-500 hover:text-black"
+                        >
+                            <X size={20} />
+                        </button>
+
+                        {/* Title */}
+                        <h2 className="text-2xl font-semibold mb-5 text-center">
+                            {editId ? "Edit Story" : "Add Story"}
+                        </h2>
+
+                        {/* Form */}
+                        <div className="space-y-4">
+
+                            {/* Subtitle */}
+                            <div>
+                                <label className="block text-sm font-medium mb-1">
+                                    Subtitle
+                                </label>
+                                <input
+                                    type="text"
+                                    name="subtitle"
+                                    value={formData.subtitle}
+                                    onChange={handleChange}
+                                    className="w-full border border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-black"
+                                />
+                            </div>
+
+                            {/* Title */}
+                            <div>
+                                <label className="block text-sm font-medium mb-1">
+                                    Title
+                                </label>
+                                <input
+                                    type="text"
+                                    name="title"
+                                    value={formData.title}
+                                    onChange={handleChange}
+                                    className="w-full border border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-black"
+                                />
+                            </div>
+
+                            {/* Content */}
+                            <div>
+                                <label className="block text-sm font-medium mb-1">
+                                    Content
+                                </label>
+                                <textarea
+                                    name="content"
+                                    value={formData.content}
+                                    onChange={handleChange}
+                                    rows={4}
+                                    className="w-full border border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-black"
+                                />
+                            </div>
+
+                            {/* Highlight */}
+                            <div>
+                                <label className="block text-sm font-medium mb-1">
+                                    Highlight Text
+                                </label>
+                                <input
+                                    type="text"
+                                    name="highlight"
+                                    value={formData.highlight}
+                                    onChange={handleChange}
+                                    className="w-full border border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-black"
+                                />
+                            </div>
+
+                            {/* Buttons */}
+                            <div className="flex gap-3 pt-4">
+                                <button
+                                    onClick={() => setShowModal(false)}
+                                    className="w-1/2 border border-gray-300 py-2 rounded-lg hover:bg-gray-100"
+                                >
+                                    Cancel
+                                </button>
+
+                                <button
+                                    onClick={handleSubmit}
+                                    className="w-1/2 bg-black text-white py-2 rounded-lg hover:bg-gray-800"
+                                >
+                                    {editId ? "Update" : "Add"}
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            )}
+        </div>
     );
-}
+};
+
+export default AdminStory;
