@@ -20,6 +20,7 @@ import AdminHero from "./AdminPages/AdminHero.jsx";
 import AdminMyStory from "./AdminPages/AdminMyStory.jsx";
 import AdminTestimonials from "./AdminPages/AdminTestimonials.jsx";
 import AdminFooter from "./AdminPages/AdminFooter.jsx";
+import NotFound from "./components/NotFound.jsx";
 
 const App = () => {
   return (
@@ -32,9 +33,11 @@ const App = () => {
             <Route path="/" element={<Index />} />
             <Route path="/menu" element={<MenuPage />} />
             <Route path="/cart" element={<CartPage />} />
+            <Route path="/notFound" element={<NotFound />} />
 
-            {/* -------------------- ADMIN LOGIN -------------------- */}
+            {/* -------------------- ADMIN LOGIN ------------------- */}
             <Route path="/admin/login" element={<AdminLogin />} />
+
 
             {/* -------------------- ADMIN PANEL -------------------- */}
             <Route
@@ -65,7 +68,7 @@ const App = () => {
 
           </Routes>
         </BrowserRouter>
-     </CartProvider>
+      </CartProvider>
     </AuthProvider>
   );
 };
