@@ -5,15 +5,15 @@ import Hero from "../components/Hero";
 import FoodCard from "../components/FoodCard";
 import OurStory from "../components/OurStory";
 import Footer from "../components/Footer";
-import { useCart } from "../assets/CartContext"; // ✅ import cart
+import { useCart } from "../assets/CartContext"; 
 
-// IMPORTANT: store price as number
+
 const items = [
     {
         id: 1,
         name: "Butter Chicken",
         desc: "Creamy tomato curry",
-        price: 1450, // ✅ number
+        price: 1450, // number
         image: "https://masala-zen-fusion-ui.lovable.app/assets/hero-food-CbwyfA_c.jpg",
     },
     {

@@ -21,7 +21,7 @@ const MenuPage = () => {
         });
     }, [dietFilter, categoryFilter, spiceFilter]);
 
-    // ✅ Improved pill styling
+    //  Improved pill styling
     const pillClass = (active) =>
         `px-4 py-2 rounded-full text-xs font-semibold transition-all duration-300 ${
             active

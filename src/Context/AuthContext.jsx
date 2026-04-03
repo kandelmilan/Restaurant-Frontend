@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from "react";
 
-// Create context outside the component
+//  context outside the component
 export const AuthContext = createContext({
     user: null,
     login: () => { },
@@ -33,5 +33,5 @@ export function AuthProvider({ children }) {
     );
 }
 
-// ✅ Stable hook export
+
 export const useAuth = () => useContext(AuthContext);
