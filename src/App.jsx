@@ -65,7 +65,7 @@ const App = () => {
 
           </Routes>
         </BrowserRouter>
-      </CartProvider>
+     </CartProvider>
     </AuthProvider>
   );
 };
