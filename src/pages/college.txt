@@ -1,0 +1,24 @@
+ {/* <button
+                onClick={() => {
+                  if (!isAuthenticated) {
+                    // user is not logged in
+                    toast.error("You should login first!", { duration: 1500 });
+                    setTimeout(() => {
+                      navigate("/login"); // navigate after toast disappears
+                    }, 1500);
+                    return;
+                  }
+
+                  // user is logged in
+                  addToCart(product, qty);
+                  toast.success("Added to cart", { duration: 1500 });
+                }}
+                className="flex-1 bg-gold text-primary-foreground py-3 text-sm uppercase tracking-widest hover:bg-gold-light transition-colors flex items-center justify-center gap-2"
+              >
+                <ShoppingCart className="w-4 h-4" /> Add to Cart
+              </button> */}
+
+
+
+                 const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
