@@ -1,19 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Plus, Pencil, Trash, X } from "lucide-react";
+import axios from "axios";
+
+const API = "http://127.0.0.1:8000/api/story";
 
 const AdminStory = () => {
-    const [stories, setStories] = useState([
-        {
-            id: "STORY-001",
-            subtitle: "Our Journey",
-            title: "Our Story",
-            content:
-                "Born from a shared dream between a spice merchant and a chef...",
-            highlight:
-                "🕉️ Authentic Spices | 🎌 Japanese Craft | 🌿 Seasonal Produce",
-        },
-    ]);
-
+    const [stories, setStories] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [editId, setEditId] = useState(null);
 
@@ -24,12 +16,26 @@ const AdminStory = () => {
         highlight: "",
     });
 
-    // Handle input change
+    // ✅ FETCH STORIES
+    const fetchStories = async () => {
+        try {
+            const res = await axios.get(API);
+            setStories(res.data);
+        } catch (err) {
+            console.error("Error fetching stories", err);
+        }
+    };
+
+    useEffect(() => {
+        fetchStories();
+    }, []);
+
+    // HANDLE INPUT
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    // Add new story
+    // ADD
     const handleAdd = () => {
         setFormData({
             subtitle: "",
@@ -41,38 +47,38 @@ const AdminStory = () => {
         setShowModal(true);
     };
 
-    // Edit story
+    // EDIT
     const handleEdit = (story) => {
         setFormData(story);
         setEditId(story.id);
         setShowModal(true);
     };
 
-    // Submit (Add / Edit)
-    const handleSubmit = () => {
-        if (!formData.title || !formData.content) return;
+    // ✅ SUBMIT (ADD / UPDATE)
+    const handleSubmit = async () => {
+        try {
+            if (editId) {
+                await axios.put(`${API}/${editId}`, formData);
+            } else {
+                await axios.post(API, formData);
+            }
 
-        if (editId) {
-            setStories(
-                stories.map((s) =>
-                    s.id === editId ? { ...s, ...formData } : s
-                )
-            );
-        } else {
-            const newStory = {
-                id: `STORY-${String(stories.length + 1).padStart(3, "0")}`,
-                ...formData,
-            };
-            setStories([...stories, newStory]);
+            fetchStories(); // refresh data
+            setShowModal(false);
+        } catch (err) {
+            console.error("Error saving story", err);
         }
-
-        setShowModal(false);
     };
 
-    // Delete story
-    const handleDelete = (id) => {
-        if (window.confirm("Are you sure you want to delete this story?")) {
-            setStories(stories.filter((s) => s.id !== id));
+    // ✅ DELETE
+    const handleDelete = async (id) => {
+        if (window.confirm("Are you sure?")) {
+            try {
+                await axios.delete(`${API}/${id}`);
+                fetchStories();
+            } catch (err) {
+                console.error("Error deleting story", err);
+            }
         }
     };
 
@@ -85,7 +91,7 @@ const AdminStory = () => {
 
                 <button
                     onClick={handleAdd}
-                    className="bg-black text-white p-3 rounded-full hover:bg-gray-800 transition"
+                    className="bg-black text-white p-3 rounded-full"
                 >
                     <Plus size={20} />
                 </button>
@@ -105,15 +111,10 @@ const AdminStory = () => {
 
                 <tbody>
                     {stories.map((story) => (
-                        <tr key={story.id} className="border-b hover:bg-gray-50">
+                        <tr key={story.id} className="border-b">
                             <td className="px-6 py-3">{story.id}</td>
-
-                            <td className="px-6 py-3 font-semibold">
-                                {story.title}
-                            </td>
-
+                            <td className="px-6 py-3 font-semibold">{story.title}</td>
                             <td className="px-6 py-3">{story.subtitle}</td>
-
                             <td className="px-6 py-3 text-sm text-gray-600">
                                 {story.highlight}
                             </td>
@@ -134,94 +135,66 @@ const AdminStory = () => {
 
             {/* MODAL */}
             {showModal && (
-                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-center z-50">
+                <div className="fixed inset-0 bg-black/50 flex justify-center items-center">
 
-                    <div className="bg-white w-full max-w-lg rounded-2xl shadow-2xl p-6 relative animate-fadeIn">
+                    <div className="bg-white w-full max-w-lg rounded-2xl p-6 relative">
 
-                        {/* Close */}
                         <button
                             onClick={() => setShowModal(false)}
-                            className="absolute top-4 right-4 text-gray-500 hover:text-black"
+                            className="absolute top-4 right-4"
                         >
                             <X size={20} />
                         </button>
 
-                        {/* Title */}
-                        <h2 className="text-2xl font-semibold mb-5 text-center">
+                        <h2 className="text-xl font-semibold mb-4">
                             {editId ? "Edit Story" : "Add Story"}
                         </h2>
 
-                        {/* Form */}
-                        <div className="space-y-4">
+                        <div className="space-y-3">
 
-                            {/* Subtitle */}
-                            <div>
-                                <label className="block text-sm font-medium mb-1">
-                                    Subtitle
-                                </label>
-                                <input
-                                    type="text"
-                                    name="subtitle"
-                                    value={formData.subtitle}
-                                    onChange={handleChange}
-                                    className="w-full border border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-black"
-                                />
-                            </div>
+                            <input
+                                name="subtitle"
+                                value={formData.subtitle}
+                                onChange={handleChange}
+                                placeholder="Subtitle"
+                                className="w-full border p-2 rounded"
+                            />
 
-                            {/* Title */}
-                            <div>
-                                <label className="block text-sm font-medium mb-1">
-                                    Title
-                                </label>
-                                <input
-                                    type="text"
-                                    name="title"
-                                    value={formData.title}
-                                    onChange={handleChange}
-                                    className="w-full border border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-black"
-                                />
-                            </div>
+                            <input
+                                name="title"
+                                value={formData.title}
+                                onChange={handleChange}
+                                placeholder="Title"
+                                className="w-full border p-2 rounded"
+                            />
 
-                            {/* Content */}
-                            <div>
-                                <label className="block text-sm font-medium mb-1">
-                                    Content
-                                </label>
-                                <textarea
-                                    name="content"
-                                    value={formData.content}
-                                    onChange={handleChange}
-                                    rows={4}
-                                    className="w-full border border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-black"
-                                />
-                            </div>
+                            <textarea
+                                name="content"
+                                value={formData.content}
+                                onChange={handleChange}
+                                placeholder="Content"
+                                className="w-full border p-2 rounded"
+                            />
 
-                            {/* Highlight */}
-                            <div>
-                                <label className="block text-sm font-medium mb-1">
-                                    Highlight Text
-                                </label>
-                                <input
-                                    type="text"
-                                    name="highlight"
-                                    value={formData.highlight}
-                                    onChange={handleChange}
-                                    className="w-full border border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-black"
-                                />
-                            </div>
+                            <input
+                                name="highlight"
+                                value={formData.highlight}
+                                onChange={handleChange}
+                                placeholder="Highlight"
+                                className="w-full border p-2 rounded"
+                            />
 
-                            {/* Buttons */}
-                            <div className="flex gap-3 pt-4">
+                            <div className="flex gap-3 pt-3">
                                 <button
                                     onClick={() => setShowModal(false)}
-                                    className="w-1/2 border border-gray-300 py-2 rounded-lg hover:bg-gray-100"
+                                    className="w-1/2 border p-2 rounded"
                                 >
                                     Cancel
                                 </button>
 
                                 <button
                                     onClick={handleSubmit}
-                                    className="w-1/2 bg-black text-white py-2 rounded-lg hover:bg-gray-800"
+                                    className="w-1/2 bg-black text-white p-2 rounded"
                                 >
                                     {editId ? "Update" : "Add"}
                                 </button>

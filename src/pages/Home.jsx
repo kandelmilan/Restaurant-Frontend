@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import Hero from "../components/Hero";
+import Hero from "../components/Hero"; // already fetches latest hero from backend
 import MenuCard from "../components/MenuCard";
 import OurStory from "../components/OurStory";
 import Footer from "../components/Footer";
 import Navbar from "../components/NavBar";
 
+// Sample menu items (can later come from backend)
 const items = [
     {
         id: "1",
@@ -55,33 +56,31 @@ export default function Home() {
         <>
             <Navbar />
 
-            {/* Hero */}
-            <Hero />
+            {/* Hero Section */}
+            <Hero /> {/* dynamically fetches the latest hero */}
 
-            {/* Featured Section */}
+            {/* Featured Menu Section */}
             <section
                 className="relative px-6 md:px-16 py-20 bg-no-repeat bg-cover bg-center"
                 style={{
                     backgroundImage: `
-            linear-gradient(
-                to right,
-                #f8f5f2 0%,
-                rgba(248,245,242,0.95) 30%,
-                rgba(248,245,242,0.7) 55%,
-                rgba(248,245,242,0.2) 75%,
-                rgba(248,245,242,0) 100%
-            ),
-            url('https://masala-zen-fusion-ui.lovable.app/assets/hero-food-CbwyfA_c.jpg')
-        `,
+                        linear-gradient(
+                            to right,
+                            #f8f5f2 0%,
+                            rgba(248,245,242,0.95) 30%,
+                            rgba(248,245,242,0.7) 55%,
+                            rgba(248,245,242,0.2) 75%,
+                            rgba(248,245,242,0) 100%
+                        ),
+                        url('https://masala-zen-fusion-ui.lovable.app/assets/hero-food-CbwyfA_c.jpg')
+                    `,
                 }}
             >
-                <div className="max-w-6xl">
+                <div className="max-w-6xl mx-auto">
 
                     {/* Header */}
                     <div className="flex justify-between items-center mb-10">
-                        <h2 className="font-serif text-3xl md:text-4xl">
-                            Guest Favorites
-                        </h2>
+                        <h2 className="font-serif text-3xl md:text-4xl">Guest Favorites</h2>
 
                         <Link
                             to="/menu"
@@ -91,7 +90,7 @@ export default function Home() {
                         </Link>
                     </div>
 
-                    {/* Cards */}
+                    {/* Menu Cards */}
                     <motion.div
                         className="grid md:grid-cols-3 gap-6"
                         variants={containerVariants}
@@ -108,7 +107,7 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* Story Section */}
+            {/* Our Story Section */}
             <OurStory />
 
             {/* Footer */}
