@@ -1,22 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { Plus, Pencil, Trash, X } from "lucide-react";
 
-const AdminTestimonials = () => {
-    const [testimonials, setTestimonials] = useState([
-        {
-            id: "TEST-001",
-            rating: 5,
-            text: "The butter chicken here rivals anything I've had in Delhi.",
-            author: "Yuki T.",
-        },
-        {
-            id: "TEST-002",
-            rating: 5,
-            text: "Authentic Indian flavors with Tokyo elegance.",
-            author: "Raj M.",
-        },
-    ]);
+const API = "http://127.0.0.1:8000/api/testimonial";
 
+const AdminTestimonials = () => {
+    const [testimonials, setTestimonials] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [editId, setEditId] = useState(null);
 
@@ -26,50 +15,78 @@ const AdminTestimonials = () => {
         author: "",
     });
 
-    // Handle input
-    const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+    // ================= FETCH =================
+    useEffect(() => {
+        fetchTestimonials();
+    }, []);
+
+    const fetchTestimonials = async () => {
+        try {
+            const res = await axios.get(API);
+            setTestimonials(res.data);
+        } catch (err) {
+            console.error("Fetch error:", err);
+        }
     };
 
-    // Add
+    // ================= INPUT =================
+    const handleChange = (e) => {
+        const value =
+            e.target.name === "rating"
+                ? Number(e.target.value)
+                : e.target.value;
+
+        setFormData({ ...formData, [e.target.name]: value });
+    };
+
+    // ================= ADD =================
     const handleAdd = () => {
         setFormData({ rating: 5, text: "", author: "" });
         setEditId(null);
         setShowModal(true);
     };
 
-    // Edit
+    // ================= EDIT =================
     const handleEdit = (item) => {
-        setFormData(item);
+        setFormData({
+            rating: item.rating,
+            text: item.text,
+            author: item.author,
+        });
         setEditId(item.id);
         setShowModal(true);
     };
 
-    // Submit
-    const handleSubmit = () => {
+    // ================= SUBMIT =================
+    const handleSubmit = async () => {
         if (!formData.text || !formData.author) return;
 
-        if (editId) {
-            setTestimonials(
-                testimonials.map((t) =>
-                    t.id === editId ? { ...t, ...formData } : t
-                )
-            );
-        } else {
-            const newItem = {
-                id: `TEST-${String(testimonials.length + 1).padStart(3, "0")}`,
-                ...formData,
-            };
-            setTestimonials([...testimonials, newItem]);
-        }
+        try {
+            if (editId) {
+                // UPDATE
+                await axios.put(`${API}/${editId}`, formData);
+            } else {
+                // CREATE
+                await axios.post(API, formData);
+            }
 
-        setShowModal(false);
+            fetchTestimonials();
+            setShowModal(false);
+
+        } catch (err) {
+            console.error("Submit error:", err);
+        }
     };
 
-    // Delete
-    const handleDelete = (id) => {
-        if (window.confirm("Delete this testimonial?")) {
-            setTestimonials(testimonials.filter((t) => t.id !== id));
+    // ================= DELETE =================
+    const handleDelete = async (id) => {
+        if (!window.confirm("Delete this testimonial?")) return;
+
+        try {
+            await axios.delete(`${API}/${id}`);
+            fetchTestimonials();
+        } catch (err) {
+            console.error("Delete error:", err);
         }
     };
 

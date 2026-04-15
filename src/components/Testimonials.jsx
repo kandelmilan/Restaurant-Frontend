@@ -1,31 +1,13 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { motion } from "framer-motion";
 
-const testimonials = [
-    {
-        id: 1,
-        rating: 5,
-        text: `"The butter chicken here rivals anything I've had in Delhi. The atmosphere is pure tranquility."`,
-        author: "Yuki T.",
-    },
-    {
-        id: 2,
-        rating: 5,
-        text: `"Finally, authentic Indian flavors presented with the elegance Tokyo deserves. A gem."`,
-        author: "Raj M.",
-    },
-    {
-        id: 3,
-        rating: 5,
-        text: `"Every dish feels like a meditation. The spice balance is impeccable."`,
-        author: "Sakura K.",
-    },
-];
+const API = "http://127.0.0.1:8000/api/testimonial";
 
 // Smooth easing
 const ease = [0.25, 0.1, 0.25, 1];
 
-// Container (slower stagger)
+// Container animation
 const containerVariants = {
     hidden: {},
     visible: {
@@ -36,7 +18,7 @@ const containerVariants = {
     },
 };
 
-// Card animation (slower + smoother)
+// Card animation
 const cardVariants = {
     hidden: { opacity: 0, y: 50 },
     visible: {
@@ -47,13 +29,31 @@ const cardVariants = {
 };
 
 export default function Testimonials() {
+    const [testimonials, setTestimonials] = useState([]);
+
+    // ================= FETCH =================
+    useEffect(() => {
+        fetchTestimonials();
+    }, []);
+
+    const fetchTestimonials = async () => {
+        try {
+            const res = await axios.get(API);
+            setTestimonials(res.data);
+        } catch (err) {
+            console.error("Fetch error:", err);
+        }
+    };
+
     return (
         <section className="bg-[#fdfaf7] py-16 px-6 md:px-16">
             <div className="max-w-7xl mx-auto text-center mb-12">
                 <p className="text-sm text-[#c97a2b] tracking-widest font-semibold mb-2">
                     TESTIMONIALS
                 </p>
-                <h2 className="font-serif text-4xl italic text-gray-900">Voices</h2>
+                <h2 className="font-serif text-4xl italic text-gray-900">
+                    Voices
+                </h2>
 
                 <div className="mt-3 flex justify-center items-center gap-3 text-[#c97a2b]">
                     <span>◦</span>
@@ -62,6 +62,7 @@ export default function Testimonials() {
                 </div>
             </div>
 
+            {/* GRID */}
             <motion.div
                 className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto"
                 variants={containerVariants}
@@ -91,7 +92,7 @@ export default function Testimonials() {
 
                         {/* Text */}
                         <blockquote className="text-gray-600 mb-4 leading-relaxed">
-                            {text}
+                            "{text}"
                         </blockquote>
 
                         {/* Author */}
