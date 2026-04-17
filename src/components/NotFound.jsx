@@ -8,26 +8,18 @@ const NotFound = () => {
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-gray-200 px-4">
             <div className="bg-white rounded-2xl shadow-xl p-8 max-w-lg w-full text-center animate-fade-in">
 
-                {/* Icon / Illustration */}
-                <div className="text-6xl animate-bounce">🚧</div>
 
-                {/* 404 Title */}
+                <div className="text-6xl animate-bounce">🚧</div>
                 <h1 className="mt-4 text-6xl font-extrabold text-red-500">
                     404
                 </h1>
-
-                {/* Subtitle */}
                 <h2 className="mt-2 text-2xl font-semibold text-gray-800">
                     Page Not Found
                 </h2>
-
-                {/* Description */}
                 <p className="mt-3 text-gray-500">
                     Oops! The page you're looking for doesn’t exist, was moved,
                     or you may have typed the wrong URL.
                 </p>
-
-                {/* Actions */}
                 <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
                     <Link
                         to="/"
