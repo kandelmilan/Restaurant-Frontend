@@ -7,8 +7,6 @@ const NotFound = () => {
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-gray-200 px-4">
             <div className="bg-white rounded-2xl shadow-xl p-8 max-w-lg w-full text-center animate-fade-in">
-
-
                 <div className="text-6xl animate-bounce">🚧</div>
                 <h1 className="mt-4 text-6xl font-extrabold text-red-500">
                     404
