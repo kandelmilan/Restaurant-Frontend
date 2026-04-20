@@ -47,7 +47,14 @@ const AdminHero = () => {
     };
 
     const handleEdit = (hero) => {
-        setFormData(hero);
+        setFormData({
+            tagline: hero.tagline,
+            title: hero.title,
+            highlight: hero.highlight,
+            description: hero.description,
+            image: hero.image,
+        });
+        setImageFile(null);
         setEditId(hero.id);
         setShowModal(true);
     };
@@ -63,7 +70,11 @@ const AdminHero = () => {
         form.append("description", formData.description);
 
         if (imageFile) {
+            // New file selected — let multer/cloudinary handle it
             form.append("image", imageFile);
+        } else {
+            // No new file — pass existing URL as a plain text field
+            form.append("existingImage", formData.image || "");
         }
 
         try {
@@ -72,15 +83,14 @@ const AdminHero = () => {
             } else {
                 await axios.post(API_URL, form);
             }
-
             fetchHeroes();
             setShowModal(false);
             setImageFile(null);
-
         } catch (err) {
-            console.log(err);
+            console.error("Submit error:", err.response?.data || err);
         }
     };
+
     const handleDelete = async (id) => {
         if (!window.confirm("Delete this hero section?")) return;
         try {
@@ -90,6 +100,7 @@ const AdminHero = () => {
             console.error("Error deleting hero:", err);
         }
     };
+
     const handleFileChange = (e) => {
         setImageFile(e.target.files[0]);
     };
