@@ -9,6 +9,7 @@ const AdminHero = () => {
     const [showModal, setShowModal] = useState(false);
     const [editId, setEditId] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [imageFile, setImageFile] = useState(null);
 
     const [formData, setFormData] = useState({
         tagline: "",
@@ -40,6 +41,7 @@ const AdminHero = () => {
 
     const handleAdd = () => {
         setFormData({ tagline: "", title: "", highlight: "", description: "", image: "" });
+        setImageFile(null);
         setEditId(null);
         setShowModal(true);
     };
@@ -53,23 +55,32 @@ const AdminHero = () => {
     const handleCancel = () => setShowModal(false);
 
     const handleSubmit = async () => {
-        if (!formData.title || !formData.description) return;
+        const form = new FormData();
+
+        form.append("tagline", formData.tagline);
+        form.append("title", formData.title);
+        form.append("highlight", formData.highlight);
+        form.append("description", formData.description);
+
+        if (imageFile) {
+            form.append("image", imageFile);
+        }
 
         try {
             if (editId) {
-                // Update existing hero
-                await axios.put(`${API_URL}/${editId}`, formData);
+                await axios.put(`${API_URL}/${editId}`, form);
             } else {
-                // Add new hero
-                await axios.post(API_URL, formData);
+                await axios.post(API_URL, form);
             }
-            fetchHeroes(); // Refresh list after changes
+
+            fetchHeroes();
             setShowModal(false);
+            setImageFile(null);
+
         } catch (err) {
-            console.error("Error saving hero:", err);
+            console.log(err);
         }
     };
-
     const handleDelete = async (id) => {
         if (!window.confirm("Delete this hero section?")) return;
         try {
@@ -79,7 +90,9 @@ const AdminHero = () => {
             console.error("Error deleting hero:", err);
         }
     };
-
+    const handleFileChange = (e) => {
+        setImageFile(e.target.files[0]);
+    };
     if (loading) return <p className="p-6">Loading heroes...</p>;
 
     return (
@@ -177,7 +190,7 @@ const AdminHero = () => {
                                 />
                             </div>
 
-                            <div>
+                            {/* <div>
                                 <label className="block text-sm font-medium mb-1">Image URL</label>
                                 <input
                                     name="image"
@@ -185,8 +198,36 @@ const AdminHero = () => {
                                     onChange={handleChange}
                                     className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
                                 />
-                            </div>
+                            </div> */}
 
+                            <div>
+                                <label className="block text-sm font-medium mb-1">Upload Image</label>
+                                <input
+                                    type="file"
+                                    name="image"
+                                    accept="image/*"
+                                    onChange={handleFileChange}
+                                    className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                                />
+
+                                {/* Preview */}
+                                {imageFile && (
+                                    <img
+                                        src={URL.createObjectURL(imageFile)}
+                                        alt="preview"
+                                        className="mt-2 w-32 h-32 object-cover rounded"
+                                    />
+                                )}
+
+                                {/* Show existing image when editing */}
+                                {!imageFile && formData.image && (
+                                    <img
+                                        src={formData.image}
+                                        alt="existing"
+                                        className="mt-2 w-32 h-32 object-cover rounded"
+                                    />
+                                )}
+                            </div>
                             <div className="flex gap-3 pt-3">
                                 <button
                                     type="button"
