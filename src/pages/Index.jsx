@@ -1,11 +1,12 @@
-// src/pages/Index.jsx
+
 import React from "react";
 import Navbar from "../components/NavBar";
 import Hero from "../components/Hero";
 import FoodCard from "../components/FoodCard";
 import OurStory from "../components/OurStory";
 import Footer from "../components/Footer";
-import { useCart } from "../assets/CartContext"; 
+import { useCart } from "../assets/CartContext";
+import { Link } from "react-router-dom";
 
 
 const items = [
@@ -41,7 +42,18 @@ const Index = () => {
             <Hero />
 
             <section className="px-6 md:px-16 py-16 bg-[#f8f5f2]">
-                <h2 className="font-serif text-3xl mb-8">Guest Favorites</h2>
+                <div className="flex justify-between items-center mb-10 flex-wrap">
+                    <h2 className="font-serif text-3xl md:text-4xl">
+                        Guest Favorites
+                    </h2>
+
+                    <Link
+                        to="/menu"
+                        className="text-orange-500 font-semibold hover:underline whitespace-nowrap shrink-0"
+                    >
+                        See Full Menu →
+                    </Link>
+                </div>
 
                 <div className="grid md:grid-cols-3 gap-6">
                     {items.map((item) => {
