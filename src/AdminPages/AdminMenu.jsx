@@ -1,118 +1,122 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Plus, Pencil, Trash, X } from "lucide-react";
+import axios from "axios";
+
+const API_URL = "http://127.0.0.1:8000/api/menu";
 
 const AdminMenu = () => {
-    const [menuItems, setMenuItems] = useState([
-        {
-            id: 1,
-            name: "Butter Chicken",
-            price: "¥1,450",
-            image: "https://via.placeholder.com/60",
-            category: "curry",
-            isVeg: false,
-            spiceLevel: 2,
-            description: "Classic Indian butter chicken."
-        },
-        {
-            id: 2,
-            name: "Palak Paneer",
-            price: "¥1,200",
-            image: "https://via.placeholder.com/60",
-            category: "curry",
-            isVeg: true,
-            spiceLevel: 1,
-            description: "Spinach with cottage cheese."
-        },
-    ]);
-
+    const [menuItems, setMenuItems] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [editId, setEditId] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [imageFile, setImageFile] = useState(null);
+
     const [formData, setFormData] = useState({
         name: "",
         price: "",
         image: "",
         category: "curry",
-        isVeg: true,
-        spiceLevel: 1,
+        is_veg: true,
+        spice_level: 1,
         description: ""
     });
 
-    // Input change
-    const handleChange = (e) => {
-        const { name, value, type, checked } = e.target;
-        setFormData({
-            ...formData,
-            [name]: type === "checkbox" ? checked : value
-        });
+    const fetchMenuItems = async () => {
+        try {
+            const res = await axios.get(API_URL);
+            setMenuItems(res.data);
+        } catch (err) {
+            console.error("Failed to fetch menu items:", err);
+        } finally {
+            setLoading(false);
+        }
     };
 
-    // Open Add Modal
+    useEffect(() => { fetchMenuItems(); }, []);
+
+    const handleChange = (e) => {
+        const { name, value, type, checked } = e.target;
+        setFormData({ ...formData, [name]: type === "checkbox" ? checked : value });
+    };
+
     const handleAdd = () => {
-        setFormData({
-            name: "",
-            price: "",
-            image: "",
-            category: "curry",
-            isVeg: true,
-            spiceLevel: 1,
-            description: ""
-        });
+        setFormData({ name: "", price: "", image: "", category: "curry", is_veg: true, spice_level: 1, description: "" });
+        setImageFile(null);
         setEditId(null);
         setShowModal(true);
     };
 
-    // Open Edit Modal
     const handleEdit = (item) => {
-        setFormData(item);
+        setFormData({
+            name: item.name,
+            price: item.price,
+            image: item.image,
+            category: item.category,
+            is_veg: item.is_veg === 1 || item.is_veg === true,
+            spice_level: item.spice_level,
+            description: item.description
+        });
+        setImageFile(null);
         setEditId(item.id);
         setShowModal(true);
     };
 
-    // Cancel modal
     const handleCancel = () => setShowModal(false);
 
-    // Submit Add/Edit
-    const handleSubmit = () => {
-        if (!formData.name || !formData.price || !formData.image) return;
+    const handleFileChange = (e) => setImageFile(e.target.files[0]);
 
-        if (editId) {
-            setMenuItems(
-                menuItems.map((item) =>
-                    item.id === editId ? { ...item, ...formData } : item
-                )
-            );
+    const handleSubmit = async () => {
+        const form = new FormData();
+        form.append("name", formData.name);
+        form.append("price", formData.price);
+        form.append("category", formData.category);
+        form.append("is_veg", formData.is_veg ? "1" : "0");
+        form.append("spice_level", formData.spice_level);
+        form.append("description", formData.description);
+
+        if (imageFile) {
+            form.append("image", imageFile);
         } else {
-            const newItem = {
-                id: menuItems.length + 1,
-                ...formData
-            };
-            setMenuItems([...menuItems, newItem]);
+            form.append("existingImage", formData.image || "");
         }
 
-        setShowModal(false);
+        try {
+            if (editId) {
+                await axios.put(`${API_URL}/${editId}`, form);
+            } else {
+                await axios.post(API_URL, form);
+            }
+            fetchMenuItems();
+            setShowModal(false);
+            setImageFile(null);
+        } catch (err) {
+            console.error("Submit error:", err.response?.data || err);
+        }
     };
 
-    // Delete item
-    const handleDelete = (id) => {
-        if (window.confirm("Delete this menu item?")) {
+    const handleDelete = async (id) => {
+        if (!window.confirm("Delete this menu item?")) return;
+        try {
+            await axios.delete(`${API_URL}/${id}`);
             setMenuItems(menuItems.filter((item) => item.id !== id));
+        } catch (err) {
+            console.error("Error deleting:", err);
         }
     };
 
+    if (loading) return <p className="p-6">Loading menu items...</p>;
+
+    // Keep your exact same JSX return, just update the image field in modal:
+    // Replace the Image URL input with file upload (same pattern as AdminHero):
     return (
         <div className="p-6">
-            {/* Header */}
             <div className="flex justify-between items-center mb-6">
                 <h1 className="text-2xl font-bold">Menu Items</h1>
-                <button
-                    onClick={handleAdd}
-                    className="bg-black text-white p-3 rounded-full hover:bg-gray-800"
-                >
+                <button onClick={handleAdd} className="bg-black text-white p-3 rounded-full hover:bg-gray-800">
                     <Plus size={20} />
                 </button>
             </div>
 
-            {/* Menu Table */}
             <table className="min-w-full bg-white rounded-xl shadow overflow-hidden">
                 <thead className="bg-gray-50">
                     <tr>
@@ -131,140 +135,86 @@ const AdminMenu = () => {
                         <tr key={item.id} className="border-b hover:bg-gray-50">
                             <td className="px-6 py-3">{item.id}</td>
                             <td className="px-6 py-3">
-                                <img
-                                    src={item.image}
-                                    alt={item.name}
-                                    className="w-12 h-12 object-cover rounded-md"
-                                />
+                                <img src={item.image} alt={item.name} className="w-12 h-12 object-cover rounded-md" />
                             </td>
                             <td className="px-6 py-3">{item.name}</td>
                             <td className="px-6 py-3">{item.price}</td>
                             <td className="px-6 py-3">{item.category}</td>
-                            <td className="px-6 py-3">{item.isVeg ? "Veg" : "Non-Veg"}</td>
-                            <td className="px-6 py-3">{"🌶️".repeat(item.spiceLevel)}</td>
+                            <td className="px-6 py-3">{item.is_veg ? "Veg" : "Non-Veg"}</td>
+                            <td className="px-6 py-3">{"🌶️".repeat(item.spice_level)}</td>
                             <td className="px-6 py-3 flex gap-3">
-                                <button onClick={() => handleEdit(item)}>
-                                    <Pencil size={18} className="text-blue-600" />
-                                </button>
-                                <button onClick={() => handleDelete(item.id)}>
-                                    <Trash size={18} className="text-red-600" />
-                                </button>
+                                <button onClick={() => handleEdit(item)}><Pencil size={18} className="text-blue-600" /></button>
+                                <button onClick={() => handleDelete(item.id)}><Trash size={18} className="text-red-600" /></button>
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
 
-            {/* Modal */}
             {showModal && (
                 <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
-                    <div className="bg-white w-full max-w-md rounded-2xl shadow-2xl p-6 relative animate-fadeIn">
-                        {/* Close */}
-                        <button
-                            onClick={handleCancel}
-                            className="absolute top-4 right-4 text-gray-500 hover:text-black"
-                        >
+                    <div className="bg-white w-full max-w-md rounded-2xl shadow-2xl p-6 relative">
+                        <button onClick={handleCancel} className="absolute top-4 right-4 text-gray-500 hover:text-black">
                             <X size={20} />
                         </button>
-
                         <h2 className="text-2xl font-semibold mb-5 text-center">
                             {editId ? "Edit Menu Item" : "Add Menu Item"}
                         </h2>
-
                         <div className="space-y-4">
                             <div>
                                 <label className="block text-gray-700 mb-1">Name</label>
-                                <input
-                                    name="name"
-                                    value={formData.name}
-                                    onChange={handleChange}
-                                    placeholder="Item Name"
-                                    className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-black placeholder:text-gray-400"
-                                />
+                                <input name="name" value={formData.name} onChange={handleChange}
+                                    className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-black" />
                             </div>
                             <div>
                                 <label className="block text-gray-700 mb-1">Price</label>
-                                <input
-                                    name="price"
-                                    value={formData.price}
-                                    onChange={handleChange}
-                                    placeholder="¥0"
-                                    className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-black placeholder:text-gray-400"
-                                />
+                                <input name="price" value={formData.price} onChange={handleChange}
+                                    className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-black" />
                             </div>
                             <div>
-                                <label className="block text-gray-700 mb-1">Image URL</label>
-                                <input
-                                    name="image"
-                                    value={formData.image}
-                                    onChange={handleChange}
-                                    placeholder="https://example.com/image.jpg"
-                                    className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-black placeholder:text-gray-400"
-                                />
+                                <label className="block text-gray-700 mb-1">Upload Image</label>
+                                <input type="file" accept="image/*" onChange={handleFileChange}
+                                    className="w-full border border-gray-300 p-2 rounded-lg" />
+                                {imageFile && (
+                                    <img src={URL.createObjectURL(imageFile)} alt="preview"
+                                        className="mt-2 w-32 h-32 object-cover rounded" />
+                                )}
+                                {!imageFile && formData.image && (
+                                    <img src={formData.image} alt="existing"
+                                        className="mt-2 w-32 h-32 object-cover rounded" />
+                                )}
                             </div>
                             <div>
                                 <label className="block text-gray-700 mb-1">Category</label>
-                                <select
-                                    name="category"
-                                    value={formData.category}
-                                    onChange={handleChange}
-                                    className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-black placeholder:text-gray-400"
-                                >
+                                <select name="category" value={formData.category} onChange={handleChange}
+                                    className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-black">
                                     {["curry", "tandoor", "starters", "sides", "drinks"].map((cat) => (
-                                        <option key={cat} value={cat}>
-                                            {cat.charAt(0).toUpperCase() + cat.slice(1)}
-                                        </option>
+                                        <option key={cat} value={cat}>{cat.charAt(0).toUpperCase() + cat.slice(1)}</option>
                                     ))}
                                 </select>
                             </div>
                             <div>
                                 <label className="block text-gray-700 mb-1">Veg / Non-Veg</label>
-                                <input
-                                    type="checkbox"
-                                    name="isVeg"
-                                    checked={formData.isVeg}
-                                    onChange={handleChange}
-                                    className="mr-2"
-                                />
+                                <input type="checkbox" name="is_veg" checked={formData.is_veg} onChange={handleChange} className="mr-2" />
                                 Vegetarian
                             </div>
                             <div>
                                 <label className="block text-gray-700 mb-1">Spice Level</label>
-                                <select
-                                    name="spiceLevel"
-                                    value={formData.spiceLevel}
-                                    onChange={handleChange}
-                                    className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
-                                >
+                                <select name="spice_level" value={formData.spice_level} onChange={handleChange}
+                                    className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-black">
                                     {[1, 2, 3].map((s) => (
-                                        <option key={s} value={s}>
-                                            {"🌶️".repeat(s)}
-                                        </option>
+                                        <option key={s} value={s}>{"🌶️".repeat(s)}</option>
                                     ))}
                                 </select>
                             </div>
                             <div>
                                 <label className="block text-gray-700 mb-1">Description</label>
-                                <textarea
-                                    name="description"
-                                    value={formData.description}
-                                    onChange={handleChange}
-                                    placeholder="Add a description..."
-                                    className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-black placeholder:text-gray-400"
-                                />
+                                <textarea name="description" value={formData.description} onChange={handleChange}
+                                    className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-black resize-none" />
                             </div>
-
                             <div className="flex gap-3 pt-3">
-                                <button
-                                    onClick={handleCancel}
-                                    className="w-1/2 border border-gray-300 py-2 rounded-lg hover:bg-gray-100"
-                                >
-                                    Cancel
-                                </button>
-                                <button
-                                    onClick={handleSubmit}
-                                    className="w-1/2 bg-black text-white py-2 rounded-lg hover:bg-gray-800"
-                                >
+                                <button onClick={handleCancel} className="w-1/2 border border-gray-300 py-2 rounded-lg hover:bg-gray-100">Cancel</button>
+                                <button onClick={handleSubmit} className="w-1/2 bg-black text-white py-2 rounded-lg hover:bg-gray-800">
                                     {editId ? "Update" : "Add"}
                                 </button>
                             </div>
