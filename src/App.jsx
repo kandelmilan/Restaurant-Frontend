@@ -21,6 +21,7 @@ import AdminMyStory from "./AdminPages/AdminMyStory.jsx";
 import AdminTestimonials from "./AdminPages/AdminTestimonials.jsx";
 import AdminFooter from "./AdminPages/AdminFooter.jsx";
 import NotFound from "./components/NotFound.jsx";
+import { DarkModeProvider } from "./RequiredComponents/DarkModeContext.jsx";
 
 const App = () => {
   return (
@@ -43,9 +44,11 @@ const App = () => {
             <Route
               path="/admin"
               element={
-                <ProtectedRoute>
-                  <AdminLayout />
-                </ProtectedRoute>
+                <DarkModeProvider>
+                  <ProtectedRoute>
+                    <AdminLayout />
+                  </ProtectedRoute>
+                </DarkModeProvider>
               }
             >
               {/* Default dashboard */}
