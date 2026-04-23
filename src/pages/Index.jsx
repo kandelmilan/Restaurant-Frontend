@@ -8,6 +8,7 @@ import Testimonials from "../components/Testimonials";
 import CallToAction from "../components/CallToAction";
 import { useCart } from "../assets/CartContext";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const items = [
     { id: 1, name: "Butter Chicken", desc: "Creamy tomato curry", price: 1450, image: "https://masala-zen-fusion-ui.lovable.app/assets/hero-food-CbwyfA_c.jpg" },
@@ -17,6 +18,7 @@ const items = [
 
 const Index = () => {
     const { addToCart, cartItems } = useCart();
+    const { t } = useTranslation();
 
     return (
         <div className="bg-[#f8f5f2] dark:bg-gray-900 transition-colors duration-300">
@@ -27,10 +29,10 @@ const Index = () => {
             <section className="px-6 md:px-16 py-16 bg-[#f8f5f2] dark:bg-gray-900 transition-colors duration-300">
                 <div className="flex justify-between items-center mb-10 flex-wrap gap-3">
                     <h2 className="font-serif text-3xl md:text-4xl text-gray-900 dark:text-white">
-                        Guest Favorites
+                        {t('guestFavorites.title')}
                     </h2>
                     <Link to="/menu" className="text-orange-500 font-semibold hover:underline whitespace-nowrap">
-                        See Full Menu →
+                        {t('guestFavorites.seeFullMenu')}
                     </Link>
                 </div>
 
@@ -40,10 +42,10 @@ const Index = () => {
                         return (
                             <FoodCard key={item.id} item={item}>
                                 {currentItem ? (
-                                    <span className="text-green-600 font-medium text-sm">Added ({currentItem.quantity})</span>
+                                    <span className="text-green-600 dark:text-green-400 font-medium text-sm">{t('guestFavorites.added')} ({currentItem.quantity})</span>
                                 ) : (
                                     <button onClick={() => addToCart(item)} className="bg-orange-500 text-white px-4 py-1.5 rounded hover:scale-105 transition">
-                                        + Add
+                                        {t('guestFavorites.add')}
                                     </button>
                                 )}
                             </FoodCard>

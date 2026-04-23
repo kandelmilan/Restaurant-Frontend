@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import axios from "axios";
 import IndianPattern from "./IndianPattern";
 import MandalaDecor from "./MandalaDecor";
+import { useTranslation } from "react-i18next";
 
 const API = "http://127.0.0.1:8000/api/story";
 
@@ -26,14 +27,12 @@ const fadeSlideUp = {
 
 export default function OurStory() {
     const [story, setStory] = useState(null);
+    const { t } = useTranslation();
 
-    // FETCH STORY
     useEffect(() => {
         const fetchStory = async () => {
             try {
                 const res = await axios.get(API);
-
-                // If multiple stories → take latest
                 setStory(res.data[0]);
             } catch (err) {
                 console.error("Error fetching story", err);
@@ -43,15 +42,13 @@ export default function OurStory() {
         fetchStory();
     }, []);
 
-    // Prevent crash before data loads
     if (!story) {
-        return <div className="text-center py-20">Loading...</div>;
+        return <div className="text-center py-20 text-gray-500 dark:text-gray-400">{t('ourStory.loading')}</div>;
     }
 
     return (
-        <section className="relative overflow-hidden bg-gradient-to-b from-secondary/50 to-background py-24">
+        <section className="relative overflow-hidden bg-gradient-to-b from-secondary/50 to-background py-24 dark:bg-gray-900">
 
-            {/* Background Mandala */}
             <MandalaDecor
                 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-primary opacity-[0.06] pointer-events-none"
                 size={500}
@@ -59,7 +56,6 @@ export default function OurStory() {
 
             <div className="container mx-auto px-6 relative z-10">
 
-                {/* Story Content */}
                 <motion.div
                     variants={containerVariants}
                     initial="hidden"
@@ -96,6 +92,6 @@ export default function OurStory() {
                     </motion.p>
                 </motion.div>
             </div>
-        </section >
+        </section>
     );
 }

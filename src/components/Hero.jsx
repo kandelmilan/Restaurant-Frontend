@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const ease = [0.25, 0.1, 0.25, 1];
 const API = "http://127.0.0.1:8000/api/heroes";
 
 export default function Hero() {
     const [hero, setHero] = useState(null);
+    const { t } = useTranslation();
 
     useEffect(() => {
         const fetchHero = async () => {
@@ -55,11 +57,11 @@ export default function Hero() {
                             <div className="flex flex-wrap gap-4 mt-7">
                                 <Link to="/menu">
                                     <button className="bg-orange-500 text-white px-6 py-3 rounded-full shadow-md hover:scale-105 hover:bg-orange-600 transition duration-300">
-                                        Order Now →
+                                        {t('hero.orderNow')}
                                     </button>
                                 </Link>
                                 <button className="border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 px-6 py-3 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition duration-300">
-                                    Learn More
+                                    {t('hero.learnMore')}
                                 </button>
                             </div>
                         </motion.div>

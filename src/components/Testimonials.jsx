@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 const API = "http://127.0.0.1:8000/api/testimonial";
 const ease = [0.25, 0.1, 0.25, 1];
@@ -16,6 +17,7 @@ const cardVariants = {
 
 export default function Testimonials() {
     const [testimonials, setTestimonials] = useState([]);
+    const { t } = useTranslation();
 
     useEffect(() => {
         axios.get(API).then((res) => setTestimonials(res.data)).catch(console.error);
@@ -24,8 +26,8 @@ export default function Testimonials() {
     return (
         <section className="bg-[#fdfaf7] dark:bg-gray-900 py-16 px-6 md:px-16 transition-colors duration-300">
             <div className="max-w-7xl mx-auto text-center mb-12">
-                <p className="text-sm text-orange-500 tracking-widest font-semibold mb-2">TESTIMONIALS</p>
-                <h2 className="font-serif text-4xl italic text-gray-900 dark:text-white">Voices</h2>
+                <p className="text-sm text-orange-500 tracking-widest font-semibold mb-2">{t('testimonials.testimonials')}</p>
+                <h2 className="font-serif text-4xl italic text-gray-900 dark:text-white">{t('testimonials.voices')}</h2>
                 <div className="mt-3 flex justify-center items-center gap-3 text-orange-500">
                     <span>◦</span><span className="text-2xl">⚛︎</span><span>◦</span>
                 </div>

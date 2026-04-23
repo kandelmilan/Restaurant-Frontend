@@ -5,6 +5,7 @@ import MenuCard from "../components/MenuCard";
 import IndianPattern from "../components/IndianPattern";
 import Navbar from "../components/NavBar";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 
 const API_URL = "http://127.0.0.1:8000/api/menu";
 
@@ -14,6 +15,7 @@ const MenuPage = () => {
     const [dietFilter, setDietFilter] = useState("all");
     const [categoryFilter, setCategoryFilter] = useState("all");
     const [spiceFilter, setSpiceFilter] = useState(null);
+    const { t } = useTranslation();
 
     useEffect(() => {
         const fetchMenu = async () => {
@@ -49,7 +51,7 @@ const MenuPage = () => {
 
     if (loading) return (
         <div className="min-h-screen flex items-center justify-center bg-[#f8f5f2] dark:bg-gray-900">
-            <p className="text-gray-500 dark:text-gray-400 text-lg">Loading menu...</p>
+            <p className="text-gray-500 dark:text-gray-400 text-lg">{t('menu.loading')}</p>
         </div>
     );
 
@@ -58,33 +60,33 @@ const MenuPage = () => {
             <Navbar />
             <div className="container mx-auto px-4 md:px-6 py-12">
                 <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="mb-8">
-                    <p className="text-xs font-semibold text-orange-500 uppercase tracking-widest mb-2">Explore Dishes</p>
-                    <h1 className="text-4xl md:text-5xl font-serif italic mb-4 text-gray-900 dark:text-white">Our Menu</h1>
+                    <p className="text-xs font-semibold text-orange-500 uppercase tracking-widest mb-2">{t('menu.exploreDishes')}</p>
+                    <h1 className="text-4xl md:text-5xl font-serif italic mb-4 text-gray-900 dark:text-white">{t('menu.ourMenu')}</h1>
                     <IndianPattern className="w-48 mb-6" color="hsl(37 90% 44%)" />
                 </motion.div>
 
-                {/* Filters — scrollable on mobile */}
+                {/* Filters */}
                 <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     className="sticky top-16 z-40 py-3 -mx-4 px-4 md:-mx-6 md:px-6 bg-[#f8f5f2]/90 dark:bg-gray-900/90 backdrop-blur-lg border-b border-gray-200 dark:border-gray-700 mb-10"
                 >
                     <div className="flex gap-2 items-center overflow-x-auto pb-1 scrollbar-hide flex-nowrap">
-                        <button onClick={() => setDietFilter("all")} className={pillClass(dietFilter === "all")}>All</button>
-                        <button onClick={() => setDietFilter("veg")} className={pillClass(dietFilter === "veg")}>🌿 Veg</button>
-                        <button onClick={() => setDietFilter("nonveg")} className={pillClass(dietFilter === "nonveg")}>🍗 Non-Veg</button>
+                        <button onClick={() => setDietFilter("all")} className={pillClass(dietFilter === "all")}>{t('menu.all')}</button>
+                        <button onClick={() => setDietFilter("veg")} className={pillClass(dietFilter === "veg")}>{t('menu.vegetarian')}</button>
+                        <button onClick={() => setDietFilter("nonveg")} className={pillClass(dietFilter === "nonveg")}>{t('menu.nonVeg')}</button>
 
                         <span className="w-px h-5 bg-gray-300 dark:bg-gray-600 mx-1 flex-shrink-0" />
 
                         {["all", "curry", "tandoor", "starters", "sides", "drinks"].map((cat) => (
                             <button key={cat} onClick={() => setCategoryFilter(cat)} className={`${pillClass(categoryFilter === cat)} whitespace-nowrap`}>
-                                {cat === "all" ? "All" : cat.charAt(0).toUpperCase() + cat.slice(1)}
+                                {cat === "all" ? t('menu.allCategories') : t(`menu.${cat}`)}
                             </button>
                         ))}
 
                         <span className="w-px h-5 bg-gray-300 dark:bg-gray-600 mx-1 flex-shrink-0" />
 
-                        <button onClick={() => setSpiceFilter(null)} className={`${pillClass(spiceFilter === null)} whitespace-nowrap`}>Any Spice</button>
+                        <button onClick={() => setSpiceFilter(null)} className={`${pillClass(spiceFilter === null)} whitespace-nowrap`}>{t('menu.anySpice')}</button>
                         {[1, 2, 3].map((s) => (
                             <button key={s} onClick={() => setSpiceFilter(s)} className={`${pillClass(spiceFilter === s)} whitespace-nowrap`}>
                                 {"🌶️".repeat(s)}
@@ -106,7 +108,7 @@ const MenuPage = () => {
 
                 {filteredItems.length === 0 && (
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-20 text-gray-500 dark:text-gray-400 text-lg">
-                        😕 No dishes match your filters.
+                        {t('menu.noDishesMatch')}
                     </motion.div>
                 )}
             </div>
