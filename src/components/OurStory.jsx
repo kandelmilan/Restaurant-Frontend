@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
-
 import IndianPattern from "./IndianPattern";
 import MandalaDecor from "./MandalaDecor";
-import Testimonials from "./Testimonials";
-import CallToAction from "./CallToAction";
 
 const API = "http://127.0.0.1:8000/api/story";
 
@@ -30,7 +27,7 @@ const fadeSlideUp = {
 export default function OurStory() {
     const [story, setStory] = useState(null);
 
-    // ✅ FETCH STORY
+    // FETCH STORY
     useEffect(() => {
         const fetchStory = async () => {
             try {
@@ -46,7 +43,7 @@ export default function OurStory() {
         fetchStory();
     }, []);
 
-    // ⛔ Prevent crash before data loads
+    // Prevent crash before data loads
     if (!story) {
         return <div className="text-center py-20">Loading...</div>;
     }
@@ -72,64 +69,33 @@ export default function OurStory() {
                 >
                     <motion.p
                         variants={fadeSlideUp}
-                        className="font-body text-xs font-semibold text-primary uppercase tracking-widest mb-3"
+                        className="font-body text-xs font-semibold text-orange-600 dark:text-orange-400 uppercase tracking-widest mb-3"
                     >
                         {story.subtitle}
                     </motion.p>
 
                     <motion.h2
                         variants={fadeSlideUp}
-                        className="font-display italic text-3xl md:text-4xl text-foreground mb-4"
+                        className="font-display italic text-3xl md:text-4xl text-black dark:text-white mb-4"
                     >
                         {story.title}
                     </motion.h2>
 
-                    <motion.div variants={fadeSlideUp}>
-                        <IndianPattern
-                            className="w-48 mx-auto mb-8 text-primary"
-                            color="hsl(37 90% 44%)"
-                        />
-                    </motion.div>
-
                     <motion.p
                         variants={fadeSlideUp}
-                        className="font-body text-base text-muted-foreground leading-relaxed mb-6"
+                        className="font-body text-base text-gray-700 dark:text-gray-300 leading-relaxed mb-6"
                     >
                         {story.content}
                     </motion.p>
 
                     <motion.p
                         variants={fadeSlideUp}
-                        className="font-body text-xs text-muted-foreground tracking-wide"
+                        className="font-body text-xs text-gray-500 dark:text-gray-400 tracking-wide"
                     >
                         {story.highlight}
                     </motion.p>
                 </motion.div>
             </div>
-
-            {/* Testimonials */}
-            <motion.div
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: false, amount: 0.2 }}
-                variants={containerVariants}
-                className="mt-16 pt-12"
-            >
-                <motion.div variants={fadeSlideUp}>
-                    <Testimonials />
-                </motion.div>
-            </motion.div>
-
-            {/* CTA */}
-            <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: false, amount: 0.2 }}
-                transition={{ ease: bentoEase, duration: 0.8 }}
-                className="mt-8 pt-6"
-            >
-                <CallToAction />
-            </motion.div>
-        </section>
+        </section >
     );
 }
