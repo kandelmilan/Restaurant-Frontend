@@ -9,23 +9,22 @@ const API = "http://127.0.0.1:8000/api/heroes";
 
 export default function Hero() {
     const [hero, setHero] = useState(null);
+    const { i18n } = useTranslation();
     const { t } = useTranslation();
 
     useEffect(() => {
         const fetchHero = async () => {
             try {
-                const res = await axios.get(API);
-                if (res.data.length === 0) return;
-                const sorted = res.data.sort((a, b) =>
-                    String(b.id).localeCompare(String(a.id), undefined, { numeric: true })
-                );
-                setHero(sorted[0]);
+                const res = await axios.get(`${API}?lang=${i18n.language}`);
+                if (res.data && res.data.length > 0) {
+                    setHero(res.data[0]);
+                }
             } catch (err) {
                 console.error("Error fetching hero:", err);
             }
         };
         fetchHero();
-    }, []);
+    }, [i18n.language]); // Re-fetch when language changes
 
     if (!hero) return null;
 
