@@ -155,18 +155,18 @@ const AdminHero = () => {
             }
 
             if (editId) {
-                console.log("🔄 Updating hero", editId);
+                console.log("Updating hero", editId);
                 const response = await axios.put(`${API}/${editId}`, form, {
                     headers: { "Content-Type": "multipart/form-data" }
                 });
-                console.log("✅ Update response:", response.data);
+                console.log("Update response:", response.data);
                 alert("Hero updated successfully!");
             } else {
-                console.log("➕ Creating new hero");
+                console.log("Creating new hero");
                 const response = await axios.post(API, form, {
                     headers: { "Content-Type": "multipart/form-data" }
                 });
-                console.log("✅ Create response:", response.data);
+                console.log("Create response:", response.data);
                 alert("Hero created successfully!");
             }
 
@@ -174,8 +174,8 @@ const AdminHero = () => {
             setShowModal(false);
             setSubmitting(false);
         } catch (err) {
-            console.error("❌ Full error:", err);
-            console.error("❌ Error response:", err.response?.data);
+            console.error("Full error:", err);
+            console.error("Error response:", err.response?.data);
             alert(`Error: ${err.response?.data?.error || err.message}`);
             setSubmitting(false);
         }
