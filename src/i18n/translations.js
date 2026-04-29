@@ -264,8 +264,6 @@ export const translations = {
             privacy: "プライバシーポリシー",
             terms: "利用規約",
         },
-
-
         cta: {
             ready: "ご旅行をお始めになりますか？",
             subtitle: "テーブルを予約するか、配達を注文してください。今日特別な経験をしてください。",

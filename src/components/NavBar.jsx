@@ -31,7 +31,7 @@ export default function Navbar() {
                 <nav className="hidden md:flex items-center gap-6 text-sm text-gray-700 dark:text-gray-300">
                     <Link to="/" className="hover:text-orange-500 dark:hover:text-orange-400 transition">{t('common.home')}</Link>
                     <Link to="/menu" className="hover:text-orange-500 dark:hover:text-orange-400 transition">{t('common.menu')}</Link>
-                    <Link to="/about" className="hover:text-orange-500 dark:hover:text-orange-400 transition">{t('common.about')}</Link>
+                    {/* <Link to="/about" className="hover:text-orange-500 dark:hover:text-orange-400 transition">{t('common.about')}</Link> */}
 
                     {/* Language Dropdown */}
                     <div className="relative">
@@ -144,7 +144,7 @@ export default function Navbar() {
                 <div className="md:hidden px-6 pb-4 flex flex-col gap-4 text-sm bg-[#f8f5f2] dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
                     <Link to="/" onClick={() => setMobileOpen(false)} className="text-gray-700 dark:text-gray-300 hover:text-orange-500 dark:hover:text-orange-400 transition py-1">{t('common.home')}</Link>
                     <Link to="/menu" onClick={() => setMobileOpen(false)} className="text-gray-700 dark:text-gray-300 hover:text-orange-500 dark:hover:text-orange-400 transition py-1">{t('common.menu')}</Link>
-                    <Link to="/about" onClick={() => setMobileOpen(false)} className="text-gray-700 dark:text-gray-300 hover:text-orange-500 dark:hover:text-orange-400 transition py-1">{t('common.about')}</Link>
+                    {/* <Link to="/about" onClick={() => setMobileOpen(false)} className="text-gray-700 dark:text-gray-300 hover:text-orange-500 dark:hover:text-orange-400 transition py-1">{t('common.about')}</Link> */}
                 </div>
             )}
         </header>
