@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
-import IndianPattern from "./IndianPattern";
 import MandalaDecor from "./MandalaDecor";
 import { useTranslation } from "react-i18next";
 
